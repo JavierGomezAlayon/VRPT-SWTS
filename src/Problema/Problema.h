@@ -15,12 +15,17 @@
 #ifndef C_Problema_H
 #define C_Problema_H
 
+#include"../Zonas/Zonas.h"
+
+
 class Problema {
  public:
   Problema();
-  Algoritmo1();
+  //void Algoritmo1();
  private:
-  
+  Zonas zonas_;
+  // atributos vector para la distancia entre las zonas y el depósito
+  // atributo vector para la distancia entre las zonas y las estaciones de transferencia (solo a la más cercana)
 };
 
 #endif

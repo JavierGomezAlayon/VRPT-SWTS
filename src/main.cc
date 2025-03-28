@@ -13,15 +13,22 @@
 // Historial de revisiones
 //        03/25/25 - Creación (primera versión) del código
 #include"funciones_main/funciones_main.h"
+#include"Problema/Problema.h"
 #include<iostream>
 
 int main(int argc, char *argv[]) {
   //Compruebo si se han introducido los argumentos necesarios
-  Dato datos = recoger_parametro(argc, argv);
-  if (datos.correcto == false) {
-    std::cerr << "Error no se han introducido los datos correctamente" << std::endl;
+  Dato datos;
+  DatosProblema datos_problema;
+  try {
+    datos = recoger_parametro(argc, argv);
+    datos_problema = leer_fichero(datos.fichero);
+  } catch (std::exception &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
     return 1;
   }
+  
+  cout << "Fichero leído correctamente" << endl;
 
   return 0;
 }
