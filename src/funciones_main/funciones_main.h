@@ -23,28 +23,11 @@
 #include<algorithm>
 #include<regex>
 
-#include"../Cordenadas/Cordenadas.h"
-#include"../Zonas/Zonas.h"
+#include"../Problema/Problema.h"
 
 struct Dato {
   bool correcto;
   std::string fichero;
-};
-
-struct DatosProblema {
-  int duracion_maxima_recoleccion;
-  int duracion_maxima_transporte;
-  int num_vehiculos;
-  int num_zonas;
-  int lx;                     // ?
-  int ly;                     // ?
-  int capacidad_vehiculo_recoleccion;
-  int capacidad_vehiculo_transporte;
-  int velocidad_vehiculo;
-  Cordenadas cord_deposito;
-  std::vector<Cordenadas> cord_estaciones_transferencia;
-  Cordenadas cord_vertedero;
-  Zonas zonas;
 };
 
 Dato recoger_parametro(int argc, char *argv[]);

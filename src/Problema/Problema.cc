@@ -17,11 +17,34 @@
 
 /** Problema::Problema()
   * @brief Crea el objeto de la clase Problema.
-  * @param 
   * @return objeto de la clase Problema
   */
 Problema::Problema() {
 
 }
 
+/** Problema::Problema(DatosProblema datos_problema)
+  * @brief Crea el objeto de la clase Problema.
+  * @param datos_problema: Datos del problema
+  * @return objeto de la clase Problema
+  */
+Problema::Problema(DatosProblema datos_problema) {
+  datos_problema_ = datos_problema;
+}
+
+/** Problema::set_datos_problema(DatosProblema datos_problema)
+  * @brief Establece los datos del problema.
+  * @param datos_problema: Datos del problema
+  */
+void Problema::set_datos_problema(DatosProblema datos_problema) {
+  datos_problema_ = datos_problema;
+}
+
+/** Problema::solve()
+  * @brief Resuelve el problema.
+  * @return void
+  */
+void Problema::solve() {
+
+}
 

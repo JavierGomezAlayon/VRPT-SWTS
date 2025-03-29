@@ -17,13 +17,30 @@
 
 #include"../Zonas/Zonas.h"
 
+struct DatosProblema {
+  int duracion_maxima_recoleccion;
+  int duracion_maxima_transporte;
+  int num_vehiculos;
+  int num_zonas;
+  int lx;                     // tamaño del mapa en x
+  int ly;                     // tamaño del mapa en y
+  int capacidad_vehiculo_recoleccion;
+  int capacidad_vehiculo_transporte;
+  int velocidad_vehiculo;
+  Cordenadas cord_deposito;
+  std::vector<Cordenadas> cord_estaciones_transferencia;
+  Cordenadas cord_vertedero;
+  Zonas zonas;
+};
 
 class Problema {
  public:
   Problema();
-  //void Algoritmo1();
+  Problema(DatosProblema datos_problema);
+  void solve();
+  void set_datos_problema(DatosProblema datos_problema);
  private:
-  Zonas zonas_;
+  DatosProblema datos_problema_;
   // atributos vector para la distancia entre las zonas y el depósito
   // atributo vector para la distancia entre las zonas y las estaciones de transferencia (solo a la más cercana)
 };

@@ -58,4 +58,54 @@ float Cordenadas::distancia(const Cordenadas &cordenadas) const {
   return sqrt(pow(this->x_ - cordenadas.x_, 2) + pow(this->y_ - cordenadas.y_, 2));
 }
 
+/**
+ * @brief Sobrecarga del operador << para imprimir las cordenadas
+ * @param os 
+ * @param cordenadas 
+ * @return std::ostream& 
+ */
+std::ostream &operator<<(std::ostream &os, const Cordenadas &cordenadas) {
+  os << "(" << cordenadas.x_ << ", " << cordenadas.y_ << ")";
+  return os;
+}
+
+/**
+ * @brief Sobrecarga del operador == para comparar dos cordenadas
+ * @param cordenadas 
+ * @return true 
+ * @return false 
+ */
+bool Cordenadas::operator==(const Cordenadas &cordenadas) const {
+  return (this->x_ == cordenadas.x_ && this->y_ == cordenadas.y_);
+}
+
+/**
+ * @brief Sobrecarga del operador < para comparar dos cordenadas
+ * @param cordenadas 
+ * @return true 
+ * @return false 
+ */
+bool Cordenadas::operator<(const Cordenadas &cordenadas) const {
+  if (this->x_ < cordenadas.x_) {
+    return true;
+  } else if (this->x_ == cordenadas.x_) {
+    return this->y_ < cordenadas.y_;
+  }
+  return false;
+}
+
+/**
+ * @brief Sobrecarga del operador > para comparar dos cordenadas
+ * @param cordenadas 
+ * @return true 
+ * @return false 
+ */
+bool Cordenadas::operator>(const Cordenadas &cordenadas) const {
+  if (this->x_ > cordenadas.x_) {
+    return true;
+  } else if (this->x_ == cordenadas.x_) {
+    return this->y_ > cordenadas.y_;
+  }
+  return false;
+}
 
