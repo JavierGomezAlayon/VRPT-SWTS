@@ -160,7 +160,7 @@ void coger_zonas(std::ifstream &file, DatosProblema &datos_problema) {
     double x, y;
     double d1, d2;
     sslinea >> id >> x >> y >> d1 >> d2;
-    datos_problema.zonas.add_zona({id, Cordenadas(x, y), d1, d2, d2 - d1});
+    datos_problema.zonas.add_zona({id, Cordenadas(x, y), d1, d2});
   }
   datos_problema.zonas.calcular_distancias();
 }

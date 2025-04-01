@@ -82,23 +82,22 @@ vector<Ruta> Problema::algoritmo_constructivo_recoleccion() {
     while(zonas_no_visitadas.size() > 0) {
       zona_mas_cercana = this->zona_mas_cercana(id_zona_actual, zonas_no_visitadas);
       // tiempo que tarda en ir a la zona de transferencia más cercana y volver al depósito
-      double tiempo_regreso = this->tiempo_regreso(zona_mas_cercana.first);
+      double tiempo_regreso = this->datos_problema_.zonas.get_zona(zona_mas_cercana.first).tiempo + this->tiempo_regreso(zona_mas_cercana.first);
       double capacidad_necesaria = zonas.get_zona(zona_mas_cercana.first).demanda;
       // compruebo que el tiempo y la capacidad son suficientes
       if (capacidad_restante > capacidad_necesaria &&
-        tiempo_restante > tiempo_regreso) {
-        cerr << "Zona más cercana: " << zona_mas_cercana.first << " distancia: " << zona_mas_cercana.second << endl;
+        tiempo_restante > tiempo_regreso) { // Si la capacidad y el tiempo son suficientes
+        // cerr << "Zona más cercana: " << zona_mas_cercana.first << " distancia: " << zona_mas_cercana.second << endl;
         // Actualizo la ruta y las zonas que han de ser visitadas
         ruta_actual.push_back(zona_mas_cercana.first);
         zonas_no_visitadas.erase(zona_mas_cercana.first);
         // Actualizo la capacidad y el tiempo
         capacidad_restante -= capacidad_necesaria;
-        tiempo_restante -= zona_mas_cercana.second * 60 / datos_problema_.velocidad_vehiculo; // lo pongo en km/h
+        tiempo_restante -= (zona_mas_cercana.second * 60 / datos_problema_.velocidad_vehiculo) + this->datos_problema_.zonas.get_zona(zona_mas_cercana.first).tiempo; // lo pongo en km/h
         id_zona_actual = zona_mas_cercana.first;
       } else if (tiempo_regreso <= tiempo_restante) { // si el tiempo es suficiente pero la capacidad no
-        // busco la zona de transferencia más cercana
         pair<int, double> zona_transferencia_mas_cercana = this->zona_mas_cercana(zona_mas_cercana.first, zonas_no_visitadas, true);
-        // voy a la zona de tranferencia y de ahí sigo el bucle
+        // voy a la zona de tranferencia
         ruta_actual.push_back(zona_transferencia_mas_cercana.first);
         // Actualizo la capacidad y el tiempo
         tiempo_restante -= zona_transferencia_mas_cercana.second * 60 / datos_problema_.velocidad_vehiculo; // lo pongo en km/h
@@ -108,7 +107,6 @@ vector<Ruta> Problema::algoritmo_constructivo_recoleccion() {
         break;
       }
     }
-    // AÑADIR QUE SI NO LE DA TIEMPO Y TIENE LA CAPACIDAD COMPLETA QUE VUELVA DIRECTAMENTE.
     if (id_zona_actual > 0) { // si no ha ido a una estación de transferencia
       // busco la zona de transferencia más cercana
       pair<int, double> zona_transferencia_mas_cercana = this->zona_mas_cercana(id_zona_actual, zonas_no_visitadas, true);
@@ -123,8 +121,6 @@ vector<Ruta> Problema::algoritmo_constructivo_recoleccion() {
     ruta.calcular_circuitos();
     cout << ruta << endl;
     ruta_recoleccion.push_back(ruta);
-
-
   }
   return ruta_recoleccion;
 }

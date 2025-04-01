@@ -24,9 +24,8 @@ using namespace std;
 struct Zona {
   int id;
   Cordenadas cordenadas;
-  double d1;                 // Representa el hueco de la zona
-  double d2;                 // Representa la capacidad de la zona
-  double demanda;            // d2 - d1
+  double tiempo;            // d1
+  double demanda;           // d2
 };
 
 /**
