@@ -56,21 +56,16 @@ void Problema::solve() {
 /** Problema::algoritmo_constructivo_recoleccion()
   * @brief Resuelve el problema de la recolección.
   * @return vector<Ruta>: Devuelve un vector con las rutas de recolección
-  * @attention Esta función cambia el vector de tareas generadas poniendo las tareas que se han recogido
   */
 vector<Ruta> Problema::algoritmo_constructivo_recoleccion() {
   calcular_distancias();
-  Zonas zonas = datos_problema_.zonas;
   const int DEPOSITO = 0;
-  // inicializo el vector de rutas
   vector<Ruta> ruta_recoleccion(datos_problema_.num_vehiculos);
   set<int> zonas_no_visitadas;
   // inicializo el vector de zonas no visitadas
   for (int i = 0; i < datos_problema_.num_zonas; i++) {
     zonas_no_visitadas.insert(i + 1); // las zonas empiezan en 1
   }
-  // inicializo el vector de tareas generadas
-  vector<Tarea> tareasGeneradas(datos_problema_.num_zonas);
   while(zonas_no_visitadas.size() > 0) { // mientras haya zonas no visitadas
     int id_zona_actual = DEPOSITO;
     // Inicializo la ruta y las variables necesarias para el nuevo vehículo
@@ -83,7 +78,7 @@ vector<Ruta> Problema::algoritmo_constructivo_recoleccion() {
       zona_mas_cercana = this->zona_mas_cercana(id_zona_actual, zonas_no_visitadas);
       // tiempo que tarda en ir a la zona de transferencia más cercana y volver al depósito
       double tiempo_regreso = this->datos_problema_.zonas.get_zona(zona_mas_cercana.first).tiempo + this->tiempo_regreso(zona_mas_cercana.first);
-      double capacidad_necesaria = zonas.get_zona(zona_mas_cercana.first).demanda;
+      double capacidad_necesaria = this->datos_problema_.zonas.get_zona(zona_mas_cercana.first).demanda;
       // compruebo que el tiempo y la capacidad son suficientes
       if (capacidad_restante > capacidad_necesaria &&
         tiempo_restante > tiempo_regreso) { // Si la capacidad y el tiempo son suficientes

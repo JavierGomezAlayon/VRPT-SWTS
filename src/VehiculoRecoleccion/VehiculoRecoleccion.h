@@ -7,17 +7,17 @@
 // Autor: javier Gómez Alayón
 // Correo: alu0101562445@ull.edu.es
 // Fecha: 03/25/25
-// Archivo Cv.h : Declaración de la clase Cv
-//        En este fichero se declara la clase Cv
+// Archivo VehiculoRecoleccion.h : Declaración de la clase VehiculoRecoleccion
+//        En este fichero se declara la clase VehiculoRecoleccion
 //
 // Historial de revisiones
 //        03/25/25 - Creación (primera versión) del código
-#ifndef C_Cv_H
-#define C_Cv_H
+#ifndef C_VehiculoRecoleccion_H
+#define C_VehiculoRecoleccion_H
 
-class Cv {
+class VehiculoRecoleccion {
  public:
-  Cv();
+  VehiculoRecoleccion();
  private:
   int id_vehiculo_;
   int id_zona_actual_;

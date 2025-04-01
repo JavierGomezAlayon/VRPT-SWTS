@@ -52,6 +52,7 @@ class Problema {
  private:
   void calcular_distancias();
   vector<Ruta> algoritmo_constructivo_recoleccion();
+  vector<Tarea> generacion_tareas(vector<Ruta>& rutas_recoleccion); // no sé si hacer una función que genere las tareas o hacerlo en el algoritmo anterior.
   pair<int,double> zona_mas_cercana(const int id_zona_actual,const set<int>& zonas_recogidas, bool zona_transferencia = false);
   double distancia(int id_sitio_actual, int id_sitio_objetivo);
   double tiempo_regreso(int id_zona_actual);
