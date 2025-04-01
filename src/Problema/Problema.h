@@ -59,11 +59,6 @@ class Problema {
   
   DatosProblema datos_problema_;
   vector<Tarea> tareas_generadas_;
-  // atributos vector para la distancia entre las zonas y el depósito
-  // atributo vector para la distancia entre las zonas y las estaciones de transferencia (solo a la más cercana)
-
-  // IMPLEMENTAR funcionalidad para buscar zonas más cercanas de la zona x.
-  // teniendo una matriz para las distancias entre zonas y depósito y otro entre zonas y estaciones de transferencia.
   vector<double> distancias_deposito_zonas_;
   vector<vector<double>> distancias_zonas_estaciones_trasnferencia_;
 };

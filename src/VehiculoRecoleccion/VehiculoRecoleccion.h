@@ -15,6 +15,8 @@
 #ifndef C_VehiculoRecoleccion_H
 #define C_VehiculoRecoleccion_H
 
+#include"../Ruta/Ruta.h"
+
 class VehiculoRecoleccion {
  public:
   VehiculoRecoleccion();
@@ -23,6 +25,8 @@ class VehiculoRecoleccion {
   int id_zona_actual_;
   double tiempo_restante_;
   double capacidad_restante_; 
+  Ruta ruta_actual_;
+  double tiempo_regreso_;
 };
 
 #endif
