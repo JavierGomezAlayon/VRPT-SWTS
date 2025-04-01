@@ -17,28 +17,35 @@
 
 #include<vector>
 #include"../Cordenadas/Cordenadas.h"
+#include<set>
 
 using namespace std;
 
 struct Zona {
   int id;
   Cordenadas cordenadas;
-  float d1;                 // Representa el hueco de la zona
-  float d2;                 // Representa la capacidad de la zona
-  float demanda;            // d2 - d1
+  double d1;                 // Representa el hueco de la zona
+  double d2;                 // Representa la capacidad de la zona
+  double demanda;            // d2 - d1
 };
 
+/**
+ * Con esta clase se trabaja con los indices desde 1 hasta size()
+ */
 class Zonas {
  public:
   Zonas();
   Zonas(vector<Zona> zonas);
   void add_zona(Zona zona);
   void calcular_distancias();
-  float get_distancia(int i, int j) const;
+  double get_distancia(const int id_noco_actual, const int id_nodo_objetivo) const;
+  int get_zona_mas_cercana(const int id_nodo_actual, const set<int>& nodos_por_visitar = {}) const;
+  int get_zona_mas_cercana(Cordenadas cordenadas_actuales, const set<int>& nodos_por_visitar = {}) const;
+  Zona get_zona(int id_noco_actual) const;
   int size() const;
  private:
   vector<Zona> zonas_;
-  vector<vector<float>> distancias_;
+  vector<vector<double>> distancias_;
 };
 
 #endif

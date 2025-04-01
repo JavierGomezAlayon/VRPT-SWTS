@@ -20,10 +20,10 @@
 
 class Cordenadas {
  public:
-  Cordenadas(int x = 0, int y = 0);
-  int get_x() const;
-  int get_y() const;
-  float distancia(const Cordenadas &cordenadas) const;
+  Cordenadas(double x = 0, double y = 0);
+  double get_x() const;
+  double get_y() const;
+  double distancia(const Cordenadas &cordenadas) const;
   // sobrecarga de operadores
   bool operator==(const Cordenadas &cordenadas) const;
   bool operator<(const Cordenadas &cordenadas) const;
@@ -31,8 +31,8 @@ class Cordenadas {
   friend std::ostream& operator<<(std::ostream &os, const Cordenadas &cordenadas);
 
  private:
-  int x_;
-  int y_;
+  double x_;
+  double y_;
  
 };
 

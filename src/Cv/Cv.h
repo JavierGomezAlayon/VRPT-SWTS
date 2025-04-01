@@ -19,7 +19,10 @@ class Cv {
  public:
   Cv();
  private:
- 
+  int id_vehiculo_;
+  int id_zona_actual_;
+  double tiempo_restante_;
+  double capacidad_restante_; 
 };
 
 #endif

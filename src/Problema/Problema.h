@@ -16,6 +16,8 @@
 #define C_Problema_H
 
 #include"../Zonas/Zonas.h"
+#include"../Ruta/Ruta.h"
+#include<set>
 
 struct DatosProblema {
   int duracion_maxima_recoleccion;
@@ -28,10 +30,18 @@ struct DatosProblema {
   int capacidad_vehiculo_transporte;
   int velocidad_vehiculo;
   Cordenadas cord_deposito;
-  std::vector<Cordenadas> cord_estaciones_transferencia;
+  vector<Cordenadas> cord_estaciones_transferencia;
   Cordenadas cord_vertedero;
   Zonas zonas;
 };
+
+struct Tarea {
+  int cantidad_residuos;
+  int estacion_transferencia;
+  int tiempo;
+};
+
+
 
 class Problema {
  public:
@@ -40,9 +50,21 @@ class Problema {
   void solve();
   void set_datos_problema(DatosProblema datos_problema);
  private:
+  void calcular_distancias();
+  vector<Ruta> algoritmo_constructivo_recoleccion();
+  pair<int,double> zona_mas_cercana(const int id_zona_actual,const set<int>& zonas_recogidas, bool zona_transferencia = false);
+  double distancia(int id_sitio_actual, int id_sitio_objetivo);
+  double tiempo_regreso(int id_zona_actual);
+  
   DatosProblema datos_problema_;
+  vector<Tarea> tareas_generadas_;
   // atributos vector para la distancia entre las zonas y el depósito
   // atributo vector para la distancia entre las zonas y las estaciones de transferencia (solo a la más cercana)
+
+  // IMPLEMENTAR funcionalidad para buscar zonas más cercanas de la zona x.
+  // teniendo una matriz para las distancias entre zonas y depósito y otro entre zonas y estaciones de transferencia.
+  vector<double> distancias_deposito_zonas_;
+  vector<vector<double>> distancias_zonas_estaciones_trasnferencia_;
 };
 
 #endif

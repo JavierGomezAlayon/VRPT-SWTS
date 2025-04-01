@@ -94,7 +94,7 @@ void menu() {
 }
 
 DatosProblema leer_fichero(std::string fichero) {
-  std::ifstream file("data/" + fichero);
+  std::ifstream file("/home/javichu401/clases/DAA/VRPT-SWTS/data/" + fichero);
   if (!file.is_open()) {
     throw std::invalid_argument("No se ha podido abrir el fichero");
   }
@@ -106,6 +106,8 @@ DatosProblema leer_fichero(std::string fichero) {
     std::istringstream sslinea(linea); // hace un stream de la linea
     actualizar_datos(datos_problema, sslinea);
   }
+  // Vuelvo a poner la línea completa en el stream sin borrar el contenido existente
+  file.seekg(-static_cast<int>(linea.size()) - 1, std::ios_base::cur);
   coger_zonas(file, datos_problema);
   file.close();
   return datos_problema;
@@ -135,16 +137,15 @@ void actualizar_datos(DatosProblema &datos_problema, std::istringstream &sslinea
   } else if (palabra == "v") {
     sslinea >> datos_problema.velocidad_vehiculo;
   } else if (palabra == "depot") {
-    int x, y;
+    double x, y;
     sslinea >> x >> y;
     datos_problema.cord_deposito = Cordenadas(x, y);
-  } else if (regex_search(palabra, regex("if[0-9]+"))) { // para detectar cualquier estación de transferencia
-    int x, y;
-    while (sslinea >> x >> y) {
-      datos_problema.cord_estaciones_transferencia.push_back(Cordenadas(x, y));
-    }
+  } else if (regex_search(palabra, regex("if([0-9]+)?"))) { // para detectar cualquier estación de transferencia
+    double x, y;
+    sslinea >> x >> y;
+    datos_problema.cord_estaciones_transferencia.push_back(Cordenadas(x, y));
   } else if (palabra == "dumpsite") {
-    int x, y;
+    double x, y;
     sslinea >> x >> y;
     datos_problema.cord_vertedero = Cordenadas(x, y);
   } 
@@ -156,8 +157,8 @@ void coger_zonas(std::ifstream &file, DatosProblema &datos_problema) {
     if (linea == "") continue;
     std::istringstream sslinea(linea);
     int id;
-    int x, y;
-    float d1, d2;
+    double x, y;
+    double d1, d2;
     sslinea >> id >> x >> y >> d1 >> d2;
     datos_problema.zonas.add_zona({id, Cordenadas(x, y), d1, d2, d2 - d1});
   }

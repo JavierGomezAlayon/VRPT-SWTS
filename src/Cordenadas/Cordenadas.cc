@@ -15,17 +15,12 @@
 
 #include"Cordenadas.h"
 
-
-
-
-
-
 /**
  * @brief Constructor de la clase Cordenadas
  * @param x 
  * @param y 
  */
-Cordenadas::Cordenadas(int x, int y) {
+Cordenadas::Cordenadas(double x, double y) {
   if (x < 0 || y < 0) {
     throw std::invalid_argument("Los valores de x e y no pueden ser negativos");
   }
@@ -35,26 +30,26 @@ Cordenadas::Cordenadas(int x, int y) {
 
 /**
  * @brief Devuelve el valor de x
- * @return int 
+ * @return double 
  */
-int Cordenadas::get_x() const {
+double Cordenadas::get_x() const {
   return x_;
 }
 
 /**
  * @brief Devuelve el valor de y
- * @return int 
+ * @return double 
  */
-int Cordenadas::get_y() const {
+double Cordenadas::get_y() const {
   return y_;
 }
 
 /**
  * @brief Calcula la distancia euclidiana entre dos cordenadas
  * @param cordenadas 
- * @return float 
+ * @return double 
  */
-float Cordenadas::distancia(const Cordenadas &cordenadas) const {
+double Cordenadas::distancia(const Cordenadas &cordenadas) const {
   return sqrt(pow(this->x_ - cordenadas.x_, 2) + pow(this->y_ - cordenadas.y_, 2));
 }
 
