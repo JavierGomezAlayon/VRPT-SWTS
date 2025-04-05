@@ -15,25 +15,29 @@
 #ifndef C_Problema_H
 #define C_Problema_H
 
-#include"../Zonas/Zonas.h"
+#include"../Zona/ZonaRecoleccion/ZonaRecoleccion.h"
+#include"../Zona/ZonaTransferencia/ZonaTransferencia.h"
+#include"../Zona/ZonaDeposito/ZonaDeposito.h"
+#include"../Zona/ZonaVertedero/ZonaVertedero.h"
 #include"../Ruta/Ruta.h"
 #include"../Algoritmo/Algoritmo.h"
 #include<set>
 
 struct DatosProblema {
-  int duracion_maxima_recoleccion;
-  int duracion_maxima_transporte;
+  int duracion_maxima_recoleccion; // en minutos
+  int duracion_maxima_transporte;  // en minutos
   int num_vehiculos;
   int num_zonas;
-  int lx;                     // tamaño del mapa en x
-  int ly;                     // tamaño del mapa en y
+  int lx;                     // tamaño del mapa (recolección) en x
+  int ly;                     // tamaño del mapa (recolección) en y
   int capacidad_vehiculo_recoleccion;
   int capacidad_vehiculo_transporte;
   int velocidad_vehiculo;
-  Cordenadas cord_deposito;
-  vector<Cordenadas> cord_estaciones_transferencia;
-  Cordenadas cord_vertedero;
-  Zonas zonas;
+  vector<Zona*> zonas;
+  // Cordenadas cord_deposito;
+  // vector<Cordenadas> cord_estaciones_transferencia;
+  // Cordenadas cord_Deposito;
+  // Zonas zonas;
 };
 
 struct Tarea {

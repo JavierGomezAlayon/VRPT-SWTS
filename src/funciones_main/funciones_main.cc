@@ -93,22 +93,24 @@ void menu() {
   }
 }
 
+/**
+ * @brief Lee el fichero de entrada y devuelve los datos del problema
+ * @param fichero nombre del fichero sin ninguna ruta adicional y con la extensión
+ * @return DatosProblema un struct hecho para llevar los datos del problema
+ * @throw std::invalid_argument si no se ha podido abrir el fichero
+ */
 DatosProblema leer_fichero(std::string fichero) {
   std::ifstream file("/home/javichu401/clases/DAA/VRPT-SWTS/data/" + fichero);
   if (!file.is_open()) {
     throw std::invalid_argument("No se ha podido abrir el fichero");
   }
   DatosProblema datos_problema;
-  std::string linea;
+  std::string linea = "";
   while (std::getline(file, linea)) {
     if (linea == "" ) continue; 
-    if (regex_search(string(1, linea[0]), regex("[0-9]"))) { break; }
     std::istringstream sslinea(linea); // hace un stream de la linea
     actualizar_datos(datos_problema, sslinea);
   }
-  // Vuelvo a poner la línea completa en el stream sin borrar el contenido existente
-  file.seekg(-static_cast<int>(linea.size()) - 1, std::ios_base::cur);
-  coger_zonas(file, datos_problema);
   file.close();
   return datos_problema;
 }
@@ -139,32 +141,29 @@ void actualizar_datos(DatosProblema &datos_problema, std::istringstream &sslinea
   } else if (palabra == "depot") {
     double x, y;
     sslinea >> x >> y;
-    datos_problema.cord_deposito = Cordenadas(x, y);
-  } else if (regex_search(palabra, regex("if([0-9]+)?"))) { // para detectar cualquier estación de transferencia
-    double x, y;
-    sslinea >> x >> y;
-    datos_problema.cord_estaciones_transferencia.push_back(Cordenadas(x, y));
+    Zona* nueva_zona = new ZonaDeposito(Cordenadas(x, y));
+    datos_problema.zonas.push_back(nueva_zona);
   } else if (palabra == "dumpsite") {
     double x, y;
     sslinea >> x >> y;
-    datos_problema.cord_vertedero = Cordenadas(x, y);
+    Zona* nueva_zona = new ZonaVertedero(Cordenadas(x, y));
+    datos_problema.zonas.push_back(nueva_zona);
+  } else if (regex_search(palabra, regex("if([0-9]+)?"))) { // para detectar cualquier estación de transferencia
+    double x, y;
+    sslinea >> x >> y;
+    int id = std::stoi(palabra.substr(2)); // le quito el if y consigo el id y lo convierto a un número negativo
+    Zona* nueva_zona = new ZonaTransferencia(-id, Cordenadas(x, y));
+    datos_problema.zonas.push_back(nueva_zona);
+  } else if (regex_search(palabra, regex("[0-9]+"))) { // para detectar cualquier zona de recolección
+    int id = std::stoi(palabra);
+    double x, y;
+    sslinea >> x >> y;
+    double d1, d2;
+    sslinea >> d1 >> d2;
+    Zona* nueva_zona = new ZonaRecoleccion(id, Cordenadas(x, y), d1, d2);
+    datos_problema.zonas.push_back(nueva_zona);
   } 
 }
-
-void coger_zonas(std::ifstream &file, DatosProblema &datos_problema) {
-  std::string linea;
-  while (std::getline(file, linea)) {
-    if (linea == "") continue;
-    std::istringstream sslinea(linea);
-    int id;
-    double x, y;
-    double d1, d2;
-    sslinea >> id >> x >> y >> d1 >> d2;
-    datos_problema.zonas.add_zona({id, Cordenadas(x, y), d1, d2});
-  }
-  datos_problema.zonas.calcular_distancias();
-}
-
 
 std::string lowercase(std::string str) {
   std::transform(str.begin(), str.end(), str.begin(), ::tolower);

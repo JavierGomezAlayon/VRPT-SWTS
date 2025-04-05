@@ -23,6 +23,7 @@
 #include<algorithm>
 #include<regex>
 
+
 #include"../Problema/Problema.h"
 
 struct Dato {
@@ -37,7 +38,6 @@ void menu();
 void mostrar_ayuda_menu();
 DatosProblema leer_fichero(std::string fichero);
 void actualizar_datos(DatosProblema &datos_problema, std::istringstream &sslinea);
-void coger_zonas(std::ifstream &file, DatosProblema &datos_problema);
 string lowercase(string str);
 
 #endif
