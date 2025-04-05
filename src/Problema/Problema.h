@@ -17,6 +17,7 @@
 
 #include"../Zonas/Zonas.h"
 #include"../Ruta/Ruta.h"
+#include"../Algoritmo/Algoritmo.h"
 #include<set>
 
 struct DatosProblema {
@@ -42,25 +43,32 @@ struct Tarea {
 };
 
 
-
+/**
+ * @brief Clase que representa el problema de recolección y transporte de residuos.
+ *        Esta clase se va a encargar de elegir como resolver el problema y con qué algoritmos hacerlo.
+ *        También encargada de sacar por pantalla todos los resultados de los algoritmos ejecutados.
+ */
 class Problema {
  public:
   Problema();
   Problema(DatosProblema datos_problema);
-  void solve();
-  void set_datos_problema(DatosProblema datos_problema);
+ //  void solve();
+ //  void set_datos_problema(DatosProblema datos_problema);
  private:
-  void calcular_distancias();
-  vector<Ruta> algoritmo_constructivo_recoleccion();
-  vector<Tarea> generacion_tareas(vector<Ruta>& rutas_recoleccion); // no sé si hacer una función que genere las tareas o hacerlo en el algoritmo anterior.
-  pair<int,double> zona_mas_cercana(const int id_zona_actual,const set<int>& zonas_recogidas, bool zona_transferencia = false);
-  double distancia(int id_sitio_actual, int id_sitio_objetivo);
-  double tiempo_regreso(int id_zona_actual);
-  
+ //  
+ //  vector<Ruta> algoritmo_constructivo_recoleccion();
+ //  vector<Tarea> generacion_tareas(vector<Ruta>& rutas_recoleccion);
+ //  void calcular_distancias();
+ //  pair<int,double> zona_mas_cercana(const int id_zona_actual,const set<int>& zonas_recogidas, bool zona_transferencia = false);
+ //  double distancia(int id_sitio_actual, int id_sitio_objetivo);
+ //  double tiempo_regreso(int id_zona_actual);
+ //  
   DatosProblema datos_problema_;
   vector<Tarea> tareas_generadas_;
-  vector<double> distancias_deposito_zonas_;
-  vector<vector<double>> distancias_zonas_estaciones_trasnferencia_;
+  vector<Algoritmo*> algoritmos_;
+ //  vector<double> distancias_deposito_zonas_;
+ //  vector<vector<double>> distancias_zonas_estaciones_trasnferencia_;
+ //  vector<double> distancias_deposito_zonas_transferencia_;
 };
 
 #endif

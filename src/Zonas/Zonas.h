@@ -28,6 +28,8 @@ struct Zona {
   double demanda;           // d2
 };
 
+// ESTO TENGO QUE QUITARLO
+
 /**
  * Con esta clase se trabaja con los indices desde 1 hasta size()
  */

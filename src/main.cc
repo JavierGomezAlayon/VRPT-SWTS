@@ -19,19 +19,23 @@ int main(int argc, char *argv[]) {
   //Compruebo si se han introducido los argumentos necesarios
   Dato datos;
   DatosProblema datos_problema;
-  try {
-    datos = recoger_parametro(argc, argv);
-    datos_problema = leer_fichero(datos.fichero);
-  } catch (std::exception &e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    return 1;
-  }
-  Problema problema(datos_problema);
-  try {
-    problema.solve();
-  } catch (std::exception &e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    return 1;
+  for (int i = 1; i <= 20; i++) {
+    datos.fichero = "instance" + std::to_string(i) + ".txt";
+    try {
+      //datos = recoger_parametro(argc, argv);
+      datos_problema = leer_fichero(datos.fichero);
+    } catch (std::exception &e) {
+      std::cerr << "Error: " << e.what() << std::endl;
+      return 1;
+    }
+    Problema problema(datos_problema);
+    cout << "instancia " << i << endl;
+    try {
+      problema.solve();
+    } catch (std::exception &e) {
+      std::cerr << "Error: " << e.what() << std::endl;
+      return 1;
+    }
   }
   cout << "Fin del programa" << endl;
   return 0;

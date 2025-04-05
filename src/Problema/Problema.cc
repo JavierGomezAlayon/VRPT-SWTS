@@ -47,9 +47,9 @@ void Problema::set_datos_problema(DatosProblema datos_problema) {
 void Problema::solve() {
   // Para resolver el problema primero debemos hacer una primera parte en la que resolvemos el problema de la recolección
   // y después la parte de transporte.
-  algoritmo_constructivo_recoleccion();
+  vector<Ruta> rutas_recoleccion = algoritmo_constructivo_recoleccion();
   // algoritmo_constructivo_transporte();
-
+  cout << "vehículos de la ruta: " << rutas_recoleccion.size() << endl << endl;
 }
 
 
@@ -60,10 +60,10 @@ void Problema::solve() {
 vector<Ruta> Problema::algoritmo_constructivo_recoleccion() {
   calcular_distancias();
   const int DEPOSITO = 0;
-  vector<Ruta> ruta_recoleccion(datos_problema_.num_vehiculos);
+  vector<Ruta> ruta_recoleccion;
   set<int> zonas_no_visitadas;
   // inicializo el vector de zonas no visitadas
-  for (int i = 0; i < datos_problema_.num_zonas; i++) {
+  for (int i = 0; i < datos_problema_.num_zonas; i++) {                 // ESTO TENGO QUE HACERLO AL REVÉS (EMPEZAR SIN ZONAS E IR AÑADIENDO)
     zonas_no_visitadas.insert(i + 1); // las zonas empiezan en 1
   }
   while(zonas_no_visitadas.size() > 0) { // mientras haya zonas no visitadas
@@ -80,24 +80,21 @@ vector<Ruta> Problema::algoritmo_constructivo_recoleccion() {
       double tiempo_regreso = this->datos_problema_.zonas.get_zona(zona_mas_cercana.first).tiempo + this->tiempo_regreso(zona_mas_cercana.first);
       double capacidad_necesaria = this->datos_problema_.zonas.get_zona(zona_mas_cercana.first).demanda;
       // compruebo que el tiempo y la capacidad son suficientes
-      if (capacidad_restante > capacidad_necesaria &&
-        tiempo_restante > tiempo_regreso) { // Si la capacidad y el tiempo son suficientes
-        // cerr << "Zona más cercana: " << zona_mas_cercana.first << " distancia: " << zona_mas_cercana.second << endl;
-        // Actualizo la ruta y las zonas que han de ser visitadas
+      if (capacidad_restante > capacidad_necesaria && tiempo_restante > tiempo_regreso) { // Si la capacidad y el tiempo son suficientes
+        // Actualizo todo lo necesario
         ruta_actual.push_back(zona_mas_cercana.first);
         zonas_no_visitadas.erase(zona_mas_cercana.first);
-        // Actualizo la capacidad y el tiempo
         capacidad_restante -= capacidad_necesaria;
         tiempo_restante -= (zona_mas_cercana.second * 60 / datos_problema_.velocidad_vehiculo) + this->datos_problema_.zonas.get_zona(zona_mas_cercana.first).tiempo; // lo pongo en km/h
         id_zona_actual = zona_mas_cercana.first;
       } else if (tiempo_regreso <= tiempo_restante) { // si el tiempo es suficiente pero la capacidad no
-        pair<int, double> zona_transferencia_mas_cercana = this->zona_mas_cercana(zona_mas_cercana.first, zonas_no_visitadas, true);
+        pair<int, double> zona_transferencia_mas_cercana = this->zona_mas_cercana(id_zona_actual, zonas_no_visitadas, true);
         // voy a la zona de tranferencia
         ruta_actual.push_back(zona_transferencia_mas_cercana.first);
+        id_zona_actual = zona_transferencia_mas_cercana.first;
         // Actualizo la capacidad y el tiempo
         tiempo_restante -= zona_transferencia_mas_cercana.second * 60 / datos_problema_.velocidad_vehiculo; // lo pongo en km/h
         capacidad_restante = this->datos_problema_.capacidad_vehiculo_recoleccion;
-        id_zona_actual = zona_transferencia_mas_cercana.first;
       } else {
         break;
       }
@@ -144,6 +141,11 @@ void Problema::calcular_distancias() {
       distancias_zonas_estaciones_trasnferencia_[i][j] = zonas.get_zona(j + 1).cordenadas.distancia(this->datos_problema_.cord_estaciones_transferencia[i]);
     }
   }
+  // Relleno la matriz de distancias entre estaciones de transferencia y deposito
+  this->distancias_deposito_zonas_transferencia_.resize(num_estaciones_transferencia);
+  for (int i = 0; i < num_estaciones_transferencia; i++) {
+    this->distancias_deposito_zonas_transferencia_[i] = cord_deposito.distancia(this->datos_problema_.cord_estaciones_transferencia[i]);
+  }
 }
 
 /**
@@ -158,12 +160,11 @@ pair<int, double> Problema::zona_mas_cercana(const int id_zona_actual,const set<
   int id_zona_mas_cercana;
   if (id_zona_actual == 0) { 
     id_zona_mas_cercana = this->datos_problema_.zonas.get_zona_mas_cercana(this->datos_problema_.cord_deposito, zonas_no_recogidas);
-    
   } else if (zona_transferencia) { // si es una zona de transferencia, busco la zona de recogida más cercana
     double distancia_mas_cercana = INFINITY;
     int zonas_transferencia_size = this->datos_problema_.cord_estaciones_transferencia.size();
     for (int i = 0; i < zonas_transferencia_size; i++) {
-      double distancia_actual = this->distancias_zonas_estaciones_trasnferencia_[i][id_zona_actual];
+      double distancia_actual = this->distancias_zonas_estaciones_trasnferencia_[i][id_zona_actual - 1]; // le resto uno para que sea el índice
       if (distancia_actual < distancia_mas_cercana) {
         id_zona_mas_cercana =  (i + 1) * -1; // lo pongo en negativo para que sea la estación de transferencia y le sumo uno para que sea el índice
         distancia_mas_cercana = distancia_actual;
@@ -204,13 +205,18 @@ double Problema::distancia(int id_zona1, int id_zona2) {
     throw std::invalid_argument("La distancia de " + std::to_string(id_zona1) + " a " + std::to_string(id_zona2) + " no es válida");
   }
   if (id_zona1 == 0 || id_zona2 == 0) { // si alguno de los dos es el depósito
+    int otra_zona = (id_zona1 == 0) ? id_zona1 : id_zona2;
     int zona_recoleccion = (id_zona1 == 0) ? id_zona2 : id_zona1;
-    return this->distancias_deposito_zonas_[zona_recoleccion];
+    if (zona_recoleccion < 0) { // si la otra zona es una estación de transferencia
+
+      return this->distancias_deposito_zonas_transferencia_[(-zona_recoleccion) - 1];
+    }
+    return this->distancias_deposito_zonas_[zona_recoleccion - 1]; // le resto uno para que sea el índice
   }
   if (id_zona1 < 0 || id_zona2 < 0) { // si alguno de los dos es una estación de transferencia
     int estacion = (id_zona1 < 0) ? -id_zona1 - 1 : -id_zona2 - 1; // lo pongo en positivo de nuevo y le resto uno para que sea el índice
     int zona = (id_zona1 < 0) ? id_zona2 : id_zona1;
-    return this->distancias_zonas_estaciones_trasnferencia_[estacion][zona];
+    return this->distancias_zonas_estaciones_trasnferencia_[estacion][zona - 1]; // le resto uno para que sea el índice
   }
   // Si los dos son zonas de recogida, devuelvo la distancia entre ellas
   return this->datos_problema_.zonas.get_distancia(id_zona1, id_zona2);
