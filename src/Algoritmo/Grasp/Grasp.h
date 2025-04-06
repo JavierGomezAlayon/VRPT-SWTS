@@ -19,7 +19,7 @@
 class Grasp : public Algoritmo {
  public:
   Grasp();
-  void solve() override;
+  // void solve() override;
  private:
  
 };

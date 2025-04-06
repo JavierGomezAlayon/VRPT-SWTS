@@ -22,6 +22,7 @@
 #include"../Ruta/Ruta.h"
 #include"../Algoritmo/Algoritmo.h"
 #include<set>
+#include<algorithm>
 
 struct DatosProblema {
   int duracion_maxima_recoleccion; // en minutos
@@ -40,6 +41,8 @@ struct DatosProblema {
   // Zonas zonas;
 };
 
+void ordenar_zonas(vector<Zona*>& zonas);
+
 struct Tarea {
   int cantidad_residuos;
   int estacion_transferencia;
@@ -56,8 +59,8 @@ class Problema {
  public:
   Problema();
   Problema(DatosProblema datos_problema);
- //  void solve();
- //  void set_datos_problema(DatosProblema datos_problema);
+  void solve();
+  void set_datos_problema(DatosProblema datos_problema);
  private:
  //  
  //  vector<Ruta> algoritmo_constructivo_recoleccion();

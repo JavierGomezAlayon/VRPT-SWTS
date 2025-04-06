@@ -18,7 +18,7 @@
 class Algoritmo {
  public:
   Algoritmo();
-  virtual void solve() = 0;
+  // virtual void solve() = 0;
  protected:
   
 };

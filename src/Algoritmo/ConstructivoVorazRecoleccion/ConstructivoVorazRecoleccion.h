@@ -19,7 +19,7 @@
 class ConstructivoVorazRecoleccion : public Algoritmo {
  public:
   ConstructivoVorazRecoleccion();
-  void solve() override;
+  // void solve() override;
  private:
  
 };

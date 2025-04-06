@@ -151,8 +151,10 @@ void actualizar_datos(DatosProblema &datos_problema, std::istringstream &sslinea
   } else if (regex_search(palabra, regex("if([0-9]+)?"))) { // para detectar cualquier estación de transferencia
     double x, y;
     sslinea >> x >> y;
-    int id = std::stoi(palabra.substr(2)); // le quito el if y consigo el id y lo convierto a un número negativo
-    Zona* nueva_zona = new ZonaTransferencia(-id, Cordenadas(x, y));
+    string numero_id = palabra.substr(2); // le quito el if
+    if (numero_id == "" ) { numero_id = "0"; } // si no hay número, le pongo 1
+    int id = std::stoi(numero_id) + 1;
+    Zona* nueva_zona = new ZonaTransferencia(id, Cordenadas(x, y));
     datos_problema.zonas.push_back(nueva_zona);
   } else if (regex_search(palabra, regex("[0-9]+"))) { // para detectar cualquier zona de recolección
     int id = std::stoi(palabra);

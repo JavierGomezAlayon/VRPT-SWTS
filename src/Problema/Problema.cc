@@ -32,25 +32,37 @@ Problema::Problema(DatosProblema datos_problema) {
   datos_problema_ = datos_problema;
 }
 
+/** ordenar_zonas()
+  * @brief Ordena las zonas por id.
+  * @param  zonas: vector de zonas
+  * @details Se ordenan las zonas por id de menor a mayor.
+  * @return void
+  */
+void ordenar_zonas(vector<Zona*>& zonas) {
+  sort(zonas.begin(), zonas.end(), [](Zona* zona_a, Zona* zona_b) {
+    return zona_a->get_id_zona() < zona_b->get_id_zona();
+  });
+}
+
 /** Problema::set_datos_problema(DatosProblema datos_problema)
   * @brief Establece los datos del problema.
   * @param datos_problema: Datos del problema
   */
-// void Problema::set_datos_problema(DatosProblema datos_problema) {
-//   datos_problema_ = datos_problema;
-// }
-// 
-// /** Problema::solve()
-//   * @brief Resuelve el problema.
-//   * @return void
-//   */
-// void Problema::solve() {
-//   // Para resolver el problema primero debemos hacer una primera parte en la que resolvemos el problema de la recolección
-//   // y después la parte de transporte.
-//   vector<Ruta> rutas_recoleccion = algoritmo_constructivo_recoleccion();
-//   // algoritmo_constructivo_transporte();
-//   cout << "vehículos de la ruta: " << rutas_recoleccion.size() << endl << endl;
-// }
+void Problema::set_datos_problema(DatosProblema datos_problema) {
+  this->datos_problema_ = datos_problema;
+}
+
+/** Problema::solve()
+  * @brief Resuelve el problema.
+  * @return void
+  */
+void Problema::solve() {
+  // Para resolver el problema primero debemos hacer una primera parte en la que resolvemos el problema de la recolección
+  // y después la parte de transporte.
+  // vector<Ruta> rutas_recoleccion = algoritmo_constructivo_recoleccion();
+  // algoritmo_constructivo_transporte();
+ //  cout << "vehículos de la ruta: " << rutas_recoleccion.size() << endl << endl;
+}
 
 
 /** Problema::algoritmo_constructivo_recoleccion()

@@ -15,6 +15,11 @@
 #ifndef C_DistanciaZonas_H
 #define C_DistanciaZonas_H
 #include <vector>
+#include <set>
+#include"../Zona/ZonaRecoleccion/ZonaRecoleccion.h"
+#include"../Zona/ZonaTransferencia/ZonaTransferencia.h"
+#include"../Zona/ZonaDeposito/ZonaDeposito.h"
+#include"../Zona/ZonaVertedero/ZonaVertedero.h"
 
 using namespace std;
 
@@ -25,14 +30,18 @@ using namespace std;
  *          Permite habiendo dado un vector de zonas, calcular la distancia entre ellas
  *          y guardarlas en un vector de distancias.
  *          Gestionando todas las peticiones de distancia entre cualquier zona
+ *          Además se encarga de obtener la zona más cercana a una zona dada y su id.
  */
 class DistanciaZonas {
  public:
   DistanciaZonas();
-  DistanciaZonas();
+  DistanciaZonas(vector<Zona*>& zonas);
+  double get_distancia(int id_zona_a, int id_zona_b) const;
+  pair<int, double> get_zona_mas_cercana(int id_zona_actual, const char tipo_zona_necesaria = 'R', const set<int>& nodos_visitados = {}) const;
  private:
-  vector<double> distancia_zonas_;
- 
+  vector<vector<double>> distancia_zonas_;
+  int num_zonas_transferencia_;
+  int num_zonas_recoleccion_;
 };
 
 #endif
