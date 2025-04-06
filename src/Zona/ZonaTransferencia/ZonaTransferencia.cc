@@ -23,3 +23,14 @@
 ZonaTransferencia::ZonaTransferencia() {
 
 }
+
+/** ZonaTransferencia::ZonaTransferencia(Cordenadas cordenadas)
+  * @brief Crea el objeto de la clase ZonaTransferencia.
+  * @param cordenadas: Coordenadas de la zona
+  * @return objeto de la clase ZonaTransferencia
+  */
+ZonaTransferencia::ZonaTransferencia(int id_zona, Cordenadas& cordenadas) {
+  this->cordenadas_ = cordenadas;
+  this->tipo_zona_ = 'T';
+  this->id_zona_ = -1; // id = -1 para la zona de transferencia
+}

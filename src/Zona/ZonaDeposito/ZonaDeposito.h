@@ -25,7 +25,7 @@
 class ZonaDeposito : public Zona {
  public:
   ZonaDeposito();
-  ZonaDeposito(Cordenadas cordenadas);
+  ZonaDeposito(Cordenadas& cordenadas);
  private:
 };
 

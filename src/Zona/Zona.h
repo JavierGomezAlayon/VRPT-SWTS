@@ -32,9 +32,9 @@ class Zona {
   // Getters
   int get_id_zona() const;
   Cordenadas get_cordenadas() const;
-  string get_tipo_zona() const;
+  char get_tipo_zona() const;
  protected:
-  string tipo_zona_;
+  char tipo_zona_;
   int id_zona_;
   Cordenadas cordenadas_;
 

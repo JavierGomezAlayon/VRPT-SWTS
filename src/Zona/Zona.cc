@@ -42,9 +42,13 @@ Cordenadas Zona::get_cordenadas() const {
 
 /** Zona::get_tipo_zona()
   * @brief Devuelve el tipo de la zona.
-  * @return string: tipo de la zona
+  * @return char: tipo de la zona
+  * @details D = Deposito
+  *          R = Recoleccion
+  *          T = Transferencia
+  *          V = Vertedero
   */
-string Zona::get_tipo_zona() const {
+char Zona::get_tipo_zona() const {
   return tipo_zona_;
 }
 

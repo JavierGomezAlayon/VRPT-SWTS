@@ -23,3 +23,15 @@
 ZonaVertedero::ZonaVertedero() {
 
 }
+
+/** ZonaVertedero::ZonaVertedero(Cordenadas cordenadas)
+  * @brief Crea el objeto de la clase ZonaVertedero.
+  * @param cordenadas: Coordenadas de la zona
+  * @return objeto de la clase ZonaVertedero
+  */
+ZonaVertedero::ZonaVertedero(Cordenadas& cordenadas) {
+  this->cordenadas_ = cordenadas;
+  this->id_zona_ = INFINITY; // id = INFINITY para el vertedero
+  this->tipo_zona_ = 'V';
+}
+

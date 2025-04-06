@@ -24,7 +24,7 @@
 class ZonaVertedero : public Zona {
  public:
   ZonaVertedero();
-  ZonaVertedero(Cordenadas cordenadas);
+  ZonaVertedero(Cordenadas& cordenadas);
   int get_id_zona() const;
  private:
  

@@ -25,9 +25,12 @@
 class ZonaRecoleccion : public Zona {
  public:
   ZonaRecoleccion();
-  ZonaRecoleccion(int id_zona, Cordenadas cordenadas, double tiempo, double demanda);
+  ZonaRecoleccion(int id_zona, Cordenadas& cordenadas, double tiempo, double demanda);
+  // Getters
+  double get_tiempo() const ;
+  double get_demanda() const ;
  private:
-  double tiempo_;
+  double tiempo_procesado_;
   double demanda_;
 };
 
