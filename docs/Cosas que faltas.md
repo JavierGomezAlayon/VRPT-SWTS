@@ -1,5 +1,5 @@
 - [x] Añadir toda la lógica de Zona y sus hijos
-- [ ] Añadir la lógica de la clase de DistanciaZonas
+- [x] Añadir la lógica de la clase de DistanciaZonas
 - [ ] Reemplazar todo para que El algoritmo lo ejecute un objeto Algoritmo
 - [ ] Hacer los distintos algoritmos 1, 2, 3 y Grasp
 - [ ] Hacer el Grasp con Búsquedas locales
