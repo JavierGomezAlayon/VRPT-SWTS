@@ -29,7 +29,7 @@ ZonaDeposito::ZonaDeposito() {
   * @param cordenadas: Coordenadas de la zona
   * @return objeto de la clase ZonaDeposito
   */
-ZonaDeposito::ZonaDeposito(Cordenadas& cordenadas) {
+ZonaDeposito::ZonaDeposito(Cordenadas cordenadas) {
   this->cordenadas_ = cordenadas;
   this->id_zona_ = 0; // id = 0 para el depósito
   this->tipo_zona_ = 'D';

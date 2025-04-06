@@ -32,7 +32,7 @@ ZonaRecoleccion::ZonaRecoleccion() {
   * @param demanda: demanda de residuos
   * @return objeto de la clase ZonaRecoleccion
   */
-ZonaRecoleccion::ZonaRecoleccion(int id_zona, Cordenadas& cordenadas, double tiempo, double demanda) {  
+ZonaRecoleccion::ZonaRecoleccion(int id_zona, Cordenadas cordenadas, double tiempo, double demanda) {  
   this->id_zona_ = id_zona;
   this->cordenadas_ = cordenadas;
   this->tipo_zona_ = 'R';

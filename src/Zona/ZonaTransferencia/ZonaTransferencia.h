@@ -23,7 +23,7 @@
 class ZonaTransferencia : public Zona {
  public:
   ZonaTransferencia();
-  ZonaTransferencia(int id_zona, Cordenadas& cordenadas);
+  ZonaTransferencia(int id_zona, Cordenadas cordenadas);
  private:
   
 };
