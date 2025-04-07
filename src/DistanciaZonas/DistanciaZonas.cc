@@ -95,26 +95,28 @@ pair<int, double> DistanciaZonas::get_zona_mas_cercana(int id_zona_actual, const
   int id_zona_mas_cercana = -1;
   int indice_inicial = 0;
   int indice_final = 0;
-  int id_zona_objetivo = 0;
+  int id_zona_objetivo = 0; 
+  int id_zona_actual_index = id_zona_actual + this->num_zonas_transferencia_; // convierto el id de la zona a índice
   switch (tipo_zona_necesaria) {
     case 'R':
       indice_inicial = this->num_zonas_transferencia_ + 1; // esto situaría el índice en la primera zona de recolección
       indice_final = this->num_zonas_transferencia_ + this->num_zonas_recoleccion_ + 1; // esto situaría el índice en la última zona de recolección
       for (int i = indice_inicial; i < indice_final; i++) {
         id_zona_objetivo++;
-        double distancia_actual = this->distancia_zonas_[id_zona_actual][i];
-        if (distancia_actual < distancia_mas_cercana && nodos_por_visitar.find(id_zona_objetivo) != nodos_por_visitar.end()) { // si la zona no ha sido recolectada y la distancia es menor que la más cercana
+        double distancia_actual = this->distancia_zonas_[id_zona_actual_index][i];
+        if (distancia_actual < distancia_mas_cercana && nodos_por_visitar.find(id_zona_objetivo) == nodos_por_visitar.end()) { // si la zona no ha sido recolectada y la distancia es menor que la más cercana
           distancia_mas_cercana = distancia_actual;
           id_zona_mas_cercana = id_zona_objetivo;
         }
       }
       break;
     case 'T':
+      id_zona_objetivo = (this->num_zonas_transferencia_ + 1) * -1; // inicializo la zona de transferencia
       indice_inicial = 0; // esto situaría el índice en la primera zona de transferencia
       indice_final = this->num_zonas_transferencia_; // esto situaría el índice en la última zona de transferencia
       for (int i = indice_inicial; i < indice_final; i++) {
-        id_zona_objetivo--;
-        double distancia_actual = this->distancia_zonas_[id_zona_actual][i];
+        id_zona_objetivo++;
+        double distancia_actual = this->distancia_zonas_[id_zona_actual_index][i];
         if (distancia_actual < distancia_mas_cercana) { // si la zona no ha sido recolectada y la distancia es menor que la más cercana
           distancia_mas_cercana = distancia_actual;
           id_zona_mas_cercana = id_zona_objetivo;
@@ -122,9 +124,9 @@ pair<int, double> DistanciaZonas::get_zona_mas_cercana(int id_zona_actual, const
       }
       break;
     case 'V':
-      return {INFINITY, this->distancia_zonas_[id_zona_actual][this->distancia_zonas_.size() - 1]}; // si es el vertedero, no hay que mirar nada
+      return {INFINITY, this->distancia_zonas_[id_zona_actual_index][this->distancia_zonas_.size() - 1]}; // si es el vertedero, no hay que mirar nada
     case 'D':
-      return {0, this->distancia_zonas_[id_zona_actual][this->num_zonas_transferencia_]}; // si es el depósito
+      return {0, this->distancia_zonas_[id_zona_actual_index][this->num_zonas_transferencia_]}; // si es el depósito
     default:
       break;
   }

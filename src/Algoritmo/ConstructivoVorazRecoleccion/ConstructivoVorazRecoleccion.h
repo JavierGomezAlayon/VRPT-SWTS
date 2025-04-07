@@ -25,8 +25,7 @@ class ConstructivoVorazRecoleccion : public Algoritmo {
   vector<Ruta>& get_rutas();
   vector<Tarea>& get_tareas();
  private:
- vector<Ruta> rutas_;
- vector<Tarea> Tareas_;
+  vector<Ruta> rutas_;
 };
 
 #endif

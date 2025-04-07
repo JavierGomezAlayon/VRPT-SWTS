@@ -15,10 +15,16 @@
 #ifndef C_Tarea_H
 #define C_Tarea_H
 
+/**
+ * @brief Estructura que representa una tarea de recolección de residuos.
+ * @param cantidad_residuos: cantidad de residuos a recoger.
+ * @param estacion_transferencia: id de la estación de transferencia.
+ * @param tiempo: tiempo que tarda en recoger la tarea.
+ */
 struct Tarea {
-  int cantidad_residuos;
-  int estacion_transferencia;
-  int tiempo;
+  double cantidad_residuos; // cantidad de residuos a recoger
+  int estacion_transferencia; // id de la estación de transferencia
+  double tiempo; // tiempo que tarda en recoger la tarea
 };
 
 #endif

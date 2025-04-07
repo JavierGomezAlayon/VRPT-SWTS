@@ -34,6 +34,9 @@ class Ruta {
   Ruta(vector<int> paradas);
   void set_nueva_parada(int parada);
   void calcular_circuitos();
+  int get_nodo(int id) const;
+  int size() const;
+  int get_circuitos() const;
 
   friend ostream& operator<<(ostream& os, const Ruta& ruta) ;
  private:

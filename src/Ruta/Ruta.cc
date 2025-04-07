@@ -76,3 +76,36 @@ ostream& operator<<(ostream& os, const Ruta& ruta) {
   }
   return os;
 }
+
+/** Ruta::get_nodo(int posicion) const
+  * @brief Devuelve el nodo de la ruta en la posición posicion.
+  * @param posicion: posición del nodo
+  * @return nodo de la ruta en la posición posicion
+  */
+int Ruta::get_nodo(int posicion) const {
+  if (posicion < 0 || posicion > paradas_.size() - 1) {
+    throw invalid_argument("posición fuera de rango");
+  }
+  if (posicion == 0 || posicion == paradas_.size() - 1) {
+    return 0; // el depósito
+  }
+  int indice = posicion + 1; // para quitar el primer elemento que es el número de circuitos
+  return paradas_[indice];
+}
+
+/** Ruta::size() const
+  * @brief Devuelve el tamaño de la ruta.
+  * @return tamaño de la ruta
+  */
+int Ruta::size() const {
+  return paradas_.size() - 1; // para quitar el primer elemento que es el número de circuitos
+}
+
+/** Ruta::get_circuitos() const
+  * @brief Devuelve el número de circuitos de la ruta.
+  * @return número de circuitos de la ruta
+  */
+int Ruta::get_circuitos() const {
+  return paradas_[0];
+}
+

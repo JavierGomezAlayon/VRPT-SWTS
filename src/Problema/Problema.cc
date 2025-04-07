@@ -57,8 +57,11 @@ void Problema::solve() {
   this->algoritmos_[0]->set_distancia_zonas(this->datos_problema_.zonas);
   this->algoritmos_[0]->solve();
   vector<Ruta> rutas_recoleccion = dynamic_cast<ConstructivoVorazRecoleccion*>(this->algoritmos_[0])->get_rutas();
-  vector<Tarea> tareas_recoleccion = dynamic_cast<ConstructivoVorazRecoleccion*>(this->algoritmos_[0])->get_tareas();
   // lo resuelvo con el algoritmo constructivo voraz de transporte
+  this->algoritmos_[1]->set_datos_problema(this->datos_problema_);
+  this->algoritmos_[1]->set_distancia_zonas(this->datos_problema_.zonas);
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_recoleccion);
+  this->algoritmos_[1]->solve();
   
 }
 

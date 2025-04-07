@@ -15,13 +15,18 @@
 #ifndef C_ConstructivoVorazTransporte_H
 #define C_ConstructivoVorazTransporte_H
 #include"../Algoritmo.h"
+#include"../../Ruta/Ruta.h"
+#include"../../Estructuras_auxiliares/Tarea/Tarea.h"
 
 class ConstructivoVorazTransporte : public Algoritmo {
  public:
   ConstructivoVorazTransporte();
   void solve() override;
+  void set_rutas(vector<Ruta>& rutas);
  private:
- 
+  void CalcularTareas();
+  vector<Tarea> tareas_;
+  vector<Ruta> rutas_;
 };
 
 #endif
