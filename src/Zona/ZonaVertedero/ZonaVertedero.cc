@@ -12,6 +12,7 @@
 //
 // Historial de revisiones
 //        04/05/25 - Creación (primera versión) del código
+#pragma GCC diagnostic ignored "-Woverflow"  // Esto ignora el warning de overflow que da en la línea:  this->id_zona_ = INFINITY;
 
 #include"ZonaVertedero.h"
 

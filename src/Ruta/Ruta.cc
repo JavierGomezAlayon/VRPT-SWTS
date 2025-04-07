@@ -52,7 +52,8 @@ void Ruta::set_nueva_parada(int parada) {
   */
 void Ruta::calcular_circuitos() {
   int circuitos = 0;
-  for (int i = 1; i < paradas_.size(); i++) {
+  int paradas_size = paradas_.size();
+  for (int i = 1; i < paradas_size; i++) {
     if (paradas_[i] < 0) { // cada vez que pasa por una estación de transferencia
       circuitos++;
     }
@@ -69,7 +70,8 @@ void Ruta::calcular_circuitos() {
   */
 ostream& operator<<(ostream& os, const Ruta& ruta) {
   os << "Ruta: ";
-  for (int i = 0; i < ruta.paradas_.size(); i++) {
+  int paradas_size = ruta.paradas_.size();
+  for (int i = 0; i < paradas_size; i++) {
     os << ruta.paradas_[i] << " ";
   }
   return os;

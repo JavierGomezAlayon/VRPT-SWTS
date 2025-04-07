@@ -32,7 +32,8 @@ DistanciaZonas::DistanciaZonas() {
 DistanciaZonas::DistanciaZonas(vector<Zona*>& zonas) {
   this->num_zonas_transferencia_ = 0;
   this->num_zonas_recoleccion_ = 0;
-  for (int i = 0; i < zonas.size(); i++) {
+  int zonas_size = zonas.size();
+  for (int i = 0; i < zonas_size; i++) {
     // Cuento las zonas de transferencia y recolección
     if (zonas[i]->get_tipo_zona() == 'T') {
       num_zonas_transferencia_++;
@@ -40,7 +41,7 @@ DistanciaZonas::DistanciaZonas(vector<Zona*>& zonas) {
       num_zonas_recoleccion_++;
     }
     // Calculo las distancias
-    for (int j = 0; j < zonas.size(); j++) {
+    for (int j = 0; j < zonas_size; j++) {
       if (i != j) {
         double distancia = zonas[i]->get_cordenadas().distancia(zonas[j]->get_cordenadas()); // distancia entre las dos cordenadas
         distancia_zonas_[i].push_back(distancia);
