@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     Problema problema(datos_problema);
     cout << "instancia " << i << endl;
     try {
-      //problema.solve();
+      problema.solve();
     } catch (std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       return 1;

@@ -33,6 +33,8 @@ DistanciaZonas::DistanciaZonas(vector<Zona*>& zonas) {
   this->num_zonas_transferencia_ = 0;
   this->num_zonas_recoleccion_ = 0;
   int zonas_size = zonas.size();
+  // Inicializo el vector de distancias
+  this->distancia_zonas_.resize(zonas_size);
   for (int i = 0; i < zonas_size; i++) {
     // Cuento las zonas de transferencia y recolección
     if (zonas[i]->get_tipo_zona() == 'T') {
@@ -46,7 +48,8 @@ DistanciaZonas::DistanciaZonas(vector<Zona*>& zonas) {
         double distancia = zonas[i]->get_cordenadas().distancia(zonas[j]->get_cordenadas()); // distancia entre las dos cordenadas
         distancia_zonas_[i].push_back(distancia);
       } else {
-        distancia_zonas_[i].push_back(INFINITY); // la distancia a si mismo es infinita
+        double distancia = INFINITY; // distancia a si mismo
+        distancia_zonas_[i].push_back(distancia); // la distancia a si mismo es infinita
       }
     }
   }

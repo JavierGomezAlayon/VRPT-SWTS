@@ -27,8 +27,11 @@ ConstructivoVorazRecoleccion::ConstructivoVorazRecoleccion() {
 /** ConstructivoVorazRecoleccion::solve()
   * @brief Resuelve el problema de recolección de residuos.
   * @return void
+  * @details Este algoritmo proporciona una solución guardada en su atributo rutas_ y también en el atributo Tareas_.
   */
 void ConstructivoVorazRecoleccion::solve() {
+  
+
 }
 
 /** ConstructivoVorazRecoleccion::get_rutas()

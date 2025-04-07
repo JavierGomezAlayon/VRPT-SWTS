@@ -52,11 +52,14 @@ void Problema::set_datos_problema(DatosProblema datos_problema) {
   * @return void
   */
 void Problema::solve() {
-  // Para resolver el problema primero debemos hacer una primera parte en la que resolvemos el problema de la recolección
-  // y después la parte de transporte.
-  // vector<Ruta> rutas_recoleccion = algoritmo_constructivo_recoleccion();
-  // algoritmo_constructivo_transporte();
- //  cout << "vehículos de la ruta: " << rutas_recoleccion.size() << endl << endl;
+  // lo resuelvo con el algoritmo constructivo voraz de recolección
+  this->algoritmos_[0]->set_datos_problema(this->datos_problema_);
+  this->algoritmos_[0]->set_distancia_zonas(this->datos_problema_.zonas);
+  this->algoritmos_[0]->solve();
+  vector<Ruta> rutas_recoleccion = dynamic_cast<ConstructivoVorazRecoleccion*>(this->algoritmos_[0])->get_rutas();
+  vector<Tarea> tareas_recoleccion = dynamic_cast<ConstructivoVorazRecoleccion*>(this->algoritmos_[0])->get_tareas();
+  // lo resuelvo con el algoritmo constructivo voraz de transporte
+  
 }
 
 

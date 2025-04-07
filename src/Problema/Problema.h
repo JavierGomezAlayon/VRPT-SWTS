@@ -42,20 +42,9 @@ class Problema {
   Problema(DatosProblema datos_problema);
   void solve();
   void set_datos_problema(DatosProblema datos_problema);
- private:
- //  
- //  vector<Ruta> algoritmo_constructivo_recoleccion();
- //  vector<Tarea> generacion_tareas(vector<Ruta>& rutas_recoleccion);
- //  void calcular_distancias();
- //  pair<int,double> zona_mas_cercana(const int id_zona_actual,const set<int>& zonas_recogidas, bool zona_transferencia = false);
- //  double distancia(int id_sitio_actual, int id_sitio_objetivo);
- //  double tiempo_regreso(int id_zona_actual);
- //  
+ private: 
   DatosProblema datos_problema_;
   vector<Algoritmo*> algoritmos_;
- //  vector<double> distancias_deposito_zonas_;
- //  vector<vector<double>> distancias_zonas_estaciones_trasnferencia_;
- //  vector<double> distancias_deposito_zonas_transferencia_;
 };
 
 #endif
