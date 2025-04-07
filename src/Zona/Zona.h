@@ -18,11 +18,13 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<vector>
+#include<algorithm>
 
 using namespace std;
 
 /**
- * @brief Clase que representa una zona de recogida, transferencia o vertedero.
+ * @brief Clase que representa una zona de recogida, transferencia, vertedero o depósito.
  * @details Esta clase se encarga de representar la clase padre de las zonas de recogida, transferencia y vertedero.
  *          Más que nada son contenedores de información sin casi funcionalidades añadidas.
  */
@@ -39,5 +41,8 @@ class Zona {
   Cordenadas cordenadas_;
 
 };
+
+
+void ordenar_zonas(vector<Zona*>& zonas);
 
 #endif

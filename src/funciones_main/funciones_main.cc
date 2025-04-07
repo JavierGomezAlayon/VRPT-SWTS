@@ -127,7 +127,7 @@ void actualizar_datos(DatosProblema &datos_problema, std::istringstream &sslinea
   } else if (palabra == "num_vehicles") {
     sslinea >> datos_problema.num_vehiculos;
   } else if (palabra == "num_zones") {
-    sslinea >> datos_problema.num_zonas;
+    sslinea >> datos_problema.num_zonas_recoleccion;
   } else if (palabra == "lx") {
     sslinea >> datos_problema.lx;
   } else if (palabra == "ly") {

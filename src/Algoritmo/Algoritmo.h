@@ -14,13 +14,20 @@
 //        04/05/25 - Creación (primera versión) del código
 #ifndef C_Algoritmo_H
 #define C_Algoritmo_H
+#include"../DistanciaZonas/DistanciaZonas.h"
+#include"../Estructuras_auxiliares/Datos_problema/Datos_problema.h"
+
 
 class Algoritmo {
  public:
   Algoritmo();
-  // virtual void solve() = 0;
+  void set_datos_problema(const DatosProblema& datos_problema);
+  void set_distancia_zonas(const DistanciaZonas& distancia_zonas);
+  Zona* obtener_zona(int id_zona) const;
+  virtual void solve() = 0;
  protected:
-  
+  DatosProblema datos_problema_;
+  DistanciaZonas distancia_zonas_;
 };
 
 #endif

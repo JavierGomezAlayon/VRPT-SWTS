@@ -25,6 +25,7 @@
 
 
 #include"../Problema/Problema.h"
+#include"../Estructuras_auxiliares/Datos_problema/Datos_problema.h"
 
 struct Dato {
   bool correcto;

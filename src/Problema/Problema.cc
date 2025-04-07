@@ -20,7 +20,10 @@
   * @return objeto de la clase Problema
   */
 Problema::Problema() {
-
+  Algoritmo* voraz1 = new ConstructivoVorazRecoleccion();
+  Algoritmo* voraz2 = new ConstructivoVorazTransporte();
+  Algoritmo* grasp = new Grasp();
+  this->algoritmos_ = {voraz1, voraz2, grasp};
 }
 
 /** Problema::Problema(DatosProblema datos_problema)
@@ -29,19 +32,11 @@ Problema::Problema() {
   * @return objeto de la clase Problema
   */
 Problema::Problema(DatosProblema datos_problema) {
-  datos_problema_ = datos_problema;
-}
-
-/** ordenar_zonas()
-  * @brief Ordena las zonas por id.
-  * @param  zonas: vector de zonas
-  * @details Se ordenan las zonas por id de menor a mayor.
-  * @return void
-  */
-void ordenar_zonas(vector<Zona*>& zonas) {
-  sort(zonas.begin(), zonas.end(), [](Zona* zona_a, Zona* zona_b) {
-    return zona_a->get_id_zona() < zona_b->get_id_zona();
-  });
+  this->datos_problema_ = datos_problema;
+  Algoritmo* voraz1 = new ConstructivoVorazRecoleccion();
+  Algoritmo* voraz2 = new ConstructivoVorazTransporte();
+  Algoritmo* grasp = new Grasp();
+  this->algoritmos_ = {voraz1, voraz2, grasp};
 }
 
 /** Problema::set_datos_problema(DatosProblema datos_problema)

@@ -23,3 +23,28 @@
 ConstructivoVorazRecoleccion::ConstructivoVorazRecoleccion() {
 
 }
+
+/** ConstructivoVorazRecoleccion::solve()
+  * @brief Resuelve el problema de recolección de residuos.
+  * @return void
+  */
+void ConstructivoVorazRecoleccion::solve() {
+}
+
+/** ConstructivoVorazRecoleccion::get_rutas()
+  * @brief Devuelve las rutas de recolección.
+  * @return vector<Ruta>&: vector de rutas
+  */
+vector<Ruta>& ConstructivoVorazRecoleccion::get_rutas() {
+  return this->rutas_;
+}
+
+/** ConstructivoVorazRecoleccion::get_tareas()
+  * @brief Devuelve las tareas de recolección.
+  * @return vector<Tarea>&: vector de tareas
+  */
+vector<Tarea>& ConstructivoVorazRecoleccion::get_tareas() {
+  return this->Tareas_;
+}
+
+

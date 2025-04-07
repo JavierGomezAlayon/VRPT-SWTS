@@ -19,7 +19,7 @@
 class ConstructivoVorazTransporte : public Algoritmo {
  public:
   ConstructivoVorazTransporte();
-  // void solve() override;
+  void solve() override;
  private:
  
 };

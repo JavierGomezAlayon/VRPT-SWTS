@@ -20,34 +20,15 @@
 #include"../Zona/ZonaDeposito/ZonaDeposito.h"
 #include"../Zona/ZonaVertedero/ZonaVertedero.h"
 #include"../Ruta/Ruta.h"
-#include"../Algoritmo/Algoritmo.h"
-#include<set>
-#include<algorithm>
+#include"../Algoritmo/ConstructivoVorazRecoleccion/ConstructivoVorazRecoleccion.h"
+#include"../Algoritmo/ConstructivoVorazTransporte/ConstructivoVorazTransporte.h"
+#include"../Algoritmo/Grasp/Grasp.h"
+#include"../DistanciaZonas/DistanciaZonas.h"
+#include"../Estructuras_auxiliares/Datos_problema/Datos_problema.h"
+#include"../Estructuras_auxiliares/Tarea/Tarea.h"
 
-struct DatosProblema {
-  int duracion_maxima_recoleccion; // en minutos
-  int duracion_maxima_transporte;  // en minutos
-  int num_vehiculos;
-  int num_zonas;
-  int lx;                     // tamaño del mapa (recolección) en x
-  int ly;                     // tamaño del mapa (recolección) en y
-  int capacidad_vehiculo_recoleccion;
-  int capacidad_vehiculo_transporte;
-  int velocidad_vehiculo;
-  vector<Zona*> zonas;
-  // Cordenadas cord_deposito;
-  // vector<Cordenadas> cord_estaciones_transferencia;
-  // Cordenadas cord_Deposito;
-  // Zonas zonas;
-};
 
-void ordenar_zonas(vector<Zona*>& zonas);
 
-struct Tarea {
-  int cantidad_residuos;
-  int estacion_transferencia;
-  int tiempo;
-};
 
 
 /**
@@ -71,7 +52,6 @@ class Problema {
  //  double tiempo_regreso(int id_zona_actual);
  //  
   DatosProblema datos_problema_;
-  vector<Tarea> tareas_generadas_;
   vector<Algoritmo*> algoritmos_;
  //  vector<double> distancias_deposito_zonas_;
  //  vector<vector<double>> distancias_zonas_estaciones_trasnferencia_;

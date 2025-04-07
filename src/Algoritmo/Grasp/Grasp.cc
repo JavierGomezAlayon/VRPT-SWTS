@@ -23,3 +23,14 @@
 Grasp::Grasp() {
 
 }
+
+/** Grasp::solve()
+  * @brief Resuelve el problema de recolección de residuos.
+  * @return void
+  */
+void Grasp::solve() {
+  // Inicializar la solución
+  // Generar la solución inicial
+  // Mejorar la solución
+  // Devolver la mejor solución
+}

@@ -23,3 +23,10 @@
 ConstructivoVorazTransporte::ConstructivoVorazTransporte() {
 
 }
+
+/** ConstructivoVorazTransporte::solve()
+  * @brief Resuelve el problema de transporte de residuos.
+  * @return void
+  */
+void ConstructivoVorazTransporte::solve() {
+}

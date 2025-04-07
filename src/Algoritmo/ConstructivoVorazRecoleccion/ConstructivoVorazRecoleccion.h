@@ -15,13 +15,18 @@
 #ifndef C_ConstructivoVorazRecoleccion_H
 #define C_ConstructivoVorazRecoleccion_H
 #include"../Algoritmo.h"
+#include"../../Ruta/Ruta.h"
+#include"../../Estructuras_auxiliares/Tarea/Tarea.h"
 
 class ConstructivoVorazRecoleccion : public Algoritmo {
  public:
   ConstructivoVorazRecoleccion();
-  // void solve() override;
+  void solve() override;
+  vector<Ruta>& get_rutas();
+  vector<Tarea>& get_tareas();
  private:
- 
+ vector<Ruta> rutas_;
+ vector<Tarea> Tareas_;
 };
 
 #endif

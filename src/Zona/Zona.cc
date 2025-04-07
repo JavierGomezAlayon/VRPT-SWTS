@@ -53,3 +53,15 @@ char Zona::get_tipo_zona() const {
 }
 
 
+/** ordenar_zonas()
+  * @brief Ordena las zonas por id.
+  * @param  zonas: vector de zonas
+  * @details Se ordenan las zonas por id de menor a mayor.
+  * @return void
+  */
+ void ordenar_zonas(vector<Zona*>& zonas) {
+  sort(zonas.begin(), zonas.end(), [](Zona* zona_a, Zona* zona_b) {
+    return zona_a->get_id_zona() < zona_b->get_id_zona();
+  });
+  return;
+}
