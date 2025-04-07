@@ -35,6 +35,8 @@ class Zona {
   int get_id_zona() const;
   Cordenadas get_cordenadas() const;
   char get_tipo_zona() const;
+  virtual double get_tiempo() const;
+  virtual double get_demanda() const;
  protected:
   char tipo_zona_;
   int id_zona_;

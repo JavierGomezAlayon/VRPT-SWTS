@@ -65,3 +65,19 @@ char Zona::get_tipo_zona() const {
   });
   return;
 }
+
+
+/** Zona::get_tiempo()
+  * @brief Devuelve el tiempo de la zona.
+  * @return double: tiempo de la zona
+  */
+double Zona::get_tiempo() const {
+  return INFINITY;
+}
+/** Zona::get_demanda()
+  * @brief Devuelve la demanda de la zona.
+  * @return double: demanda de la zona
+  */
+double Zona::get_demanda() const {
+  return INFINITY;
+}

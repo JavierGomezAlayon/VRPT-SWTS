@@ -27,8 +27,8 @@ class ZonaRecoleccion : public Zona {
   ZonaRecoleccion();
   ZonaRecoleccion(int id_zona, Cordenadas cordenadas, double tiempo, double demanda);
   // Getters
-  double get_tiempo() const ;
-  double get_demanda() const ;
+  double get_tiempo() const override;
+  double get_demanda() const override;
  private:
   double tiempo_procesado_;
   double demanda_;
