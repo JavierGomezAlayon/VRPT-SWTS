@@ -26,9 +26,9 @@ Grasp::Grasp() {
 
 /** Grasp::solve()
   * @brief Resuelve el problema de recolección de residuos.
-  * @return void
+  * @return this Devuelve el propio objeto para permitir la encadenación de llamadas.
   */
-void Grasp::solve() {
+Algoritmo& Grasp::solve() {
   const int DEPOSITO = 0;
   set<int> zonas_visitadas;
   this->rutas_.clear();
@@ -64,7 +64,6 @@ void Grasp::solve() {
         tiempo_restante -= tiempo_hasta_zona; // lo pongo en km/h
         id_zona_actual = zona_mas_cercana.first;
       } else if (tiempo_restante > tiempo_regreso) { // si el tiempo es suficiente pero la capacidad no
-        double tiempo_restante_aux = tiempo_restante; // lo pongo en km/h
         id_zona_transferencia = this->distancia_zonas_.get_zona_mas_cercana(id_zona_actual, 'T'); // obtengo la zona de transferencia más cercana
         // voy a la zona de tranferencia
         ruta_actual.push_back(id_zona_transferencia.first);
@@ -86,13 +85,14 @@ void Grasp::solve() {
     } else { // si ha ido a una estación de transferencia
       id_zona_actual = 0; // lo pongo en positivo de nuevo
     }
-    Ruta ruta (ruta_actual);
+    RutaRecoleccion ruta (ruta_actual);
     ruta.set_nueva_parada(0); // añado la parada de vuelta al depósito
     ruta.calcular_circuitos();
-    cout << "Ruta: " << ruta << endl;
+    // cout << "Ruta: " << ruta << endl;
     this->rutas_.push_back(ruta);
   }
-  cout << "Se han visitado " << zonas_visitadas.size() << " zonas de recolección, con " << rutas_.size() << " vehículos" << endl;
+  // cout << "Se han visitado " << zonas_visitadas.size() << " zonas de recolección, con " << rutas_.size() << " vehículos" << endl;
+  return *this;
 }
 
 
@@ -100,7 +100,7 @@ void Grasp::solve() {
   * @brief Devuelve las rutas del objeto.
   * @return vector<Ruta>&: vector de rutas
   */
-vector<Ruta>& Grasp::get_rutas() {
+vector<RutaRecoleccion>& Grasp::get_rutas() {
   return this->rutas_;
 }
 

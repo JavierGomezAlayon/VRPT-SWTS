@@ -24,31 +24,33 @@
 
 /** ConstructivoVorazTransporte::solve()
   * @brief Resuelve el problema de transporte de residuos.
-  * @return void
+  * @return this Devuelve el propio objeto para permitir la encadenación de llamadas.
   */
-void ConstructivoVorazTransporte::solve() {
+ Algoritmo& ConstructivoVorazTransporte::solve() {
   this->CalcularTareas();
-
-
+  this->CalcularRutasTransporte();
+  return *this;
 }
 
 /** ConstructivoVorazTransporte::set_rutas(vector<Ruta>& rutas)
   * @brief Establece las rutas del objeto.
   * @param rutas: vector de rutas
-  * @return void
+  * @return this Devuelve el propio objeto para permitir la encadenación de llamadas.
   */
-void ConstructivoVorazTransporte::set_rutas(vector<Ruta>& rutas) {
-  this->rutas_ = rutas;
+ Algoritmo& ConstructivoVorazTransporte::set_rutas(vector<RutaRecoleccion> rutas) {
+  this->rutas_recoleccion_ = rutas;
+  return *this;
 }
 
 
 /** ConstructivoVorazTransporte::CalcularTareas()
   * @brief Calcula las tareas de transporte.
   * @return void
+  * @details Esta función se encarga de calcular las tareas de transporte a partir de las rutas de recolección.
   */
 void ConstructivoVorazTransporte::CalcularTareas() {
   tareas_.clear();
-  for (const Ruta& ruta : rutas_) {
+  for (const RutaRecoleccion& ruta : this->rutas_recoleccion_) {
     double cantidad_residuos = 0;
     double tiempo = 0;
     int indice_nodo_anterior = 0;
@@ -67,7 +69,7 @@ void ConstructivoVorazTransporte::CalcularTareas() {
           throw std::runtime_error("Un vehículo se ha llevado residuos al depósito");
         }
         if (tiempo > this->datos_problema_.duracion_maxima_recoleccion) {
-          cerr << "ruta: " << ruta << endl;
+          cerr << ruta << endl;
           cerr << "tiempo: " << tiempo << endl;
           throw std::runtime_error("El tiempo de recolección supera el tiempo máximo permitido");
         }
@@ -92,6 +94,6 @@ void ConstructivoVorazTransporte::CalcularTareas() {
   *          Modifica el vector de rutas_ del objeto.
   */
 void ConstructivoVorazTransporte::CalcularRutasTransporte() {
-
+  return;
 }
 

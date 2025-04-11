@@ -21,9 +21,9 @@
 class Algoritmo {
  public:
   Algoritmo();
-  void set_datos_problema(const DatosProblema& datos_problema);
-  void set_distancia_zonas(const DistanciaZonas& distancia_zonas);
-  virtual void solve() = 0;
+  Algoritmo& set_datos_problema(const DatosProblema& datos_problema);
+  Algoritmo& set_distancia_zonas(const DistanciaZonas& distancia_zonas);
+  virtual Algoritmo& solve() = 0;
   protected:
   Zona* obtener_zona(int id_zona) const;
   DatosProblema datos_problema_;

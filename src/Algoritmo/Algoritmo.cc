@@ -42,18 +42,20 @@ for (int i = 0; i < num_zonas; i++) {
 /** Algoritmo::set_datos_problema(const DatosProblema& datos_problema)
   * @brief Establece los datos del problema.
   * @param datos_problema: datos del problema
-  * @return 
+  * @return this Devuelve el propio objeto para permitir la encadenación de llamadas.
   */
-void Algoritmo::set_datos_problema(const DatosProblema& datos_problema) {
+ Algoritmo& Algoritmo::set_datos_problema(const DatosProblema& datos_problema) {
   this->datos_problema_ = datos_problema;
+  return *this;
 }
 
 /** Algoritmo::set_distancia_zonas(const DistanciaZonas& distancia_zonas)
   * @brief Establece la distancia entre zonas.
   * @param distancia_zonas: distancia entre zonas
-  * @return 
+  * @return this Devuelve el propio objeto para permitir la encadenación de llamadas.
   */
-void Algoritmo::set_distancia_zonas(const DistanciaZonas& distancia_zonas) {
+Algoritmo& Algoritmo::set_distancia_zonas(const DistanciaZonas& distancia_zonas) {
   this->distancia_zonas_ = distancia_zonas;
+  return *this;
 }
 

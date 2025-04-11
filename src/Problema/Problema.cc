@@ -53,24 +53,17 @@ void Problema::set_datos_problema(DatosProblema datos_problema) {
   */
 void Problema::solve() {
   // lo resuelvo con el algoritmo constructivo voraz de recolección
-  this->algoritmos_[0]->set_datos_problema(this->datos_problema_);
-  this->algoritmos_[0]->set_distancia_zonas(this->datos_problema_.zonas);
-  this->algoritmos_[0]->solve();
-  vector<Ruta> rutas_recoleccion = dynamic_cast<ConstructivoVorazRecoleccion*>(this->algoritmos_[0])->get_rutas();
+  this->algoritmos_[0]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas).solve();
+  vector<RutaRecoleccion> rutas_recoleccion = dynamic_cast<ConstructivoVorazRecoleccion*>(this->algoritmos_[0])->get_rutas();
   // lo resuelvo con el algoritmo constructivo voraz de transporte
-  this->algoritmos_[1]->set_datos_problema(this->datos_problema_);
-  this->algoritmos_[1]->set_distancia_zonas(this->datos_problema_.zonas);
-  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_recoleccion);
-  this->algoritmos_[1]->solve();
+  this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_recoleccion).solve();
 
   // lo resuelvo con el algoritmo GRASP
-  this->algoritmos_[2]->set_datos_problema(this->datos_problema_);
-  this->algoritmos_[2]->set_distancia_zonas(this->datos_problema_.zonas);
-  this->algoritmos_[2]->solve();
-  vector<Ruta> rutas_grasp = dynamic_cast<Grasp*>(this->algoritmos_[2])->get_rutas();
+  this->algoritmos_[2]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas).solve();
+  vector<RutaRecoleccion> rutas_grasp = dynamic_cast<Grasp*>(this->algoritmos_[2])->get_rutas();
 
-  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_grasp);
-  this->algoritmos_[1]->solve();
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_grasp).solve();
   
 }
 

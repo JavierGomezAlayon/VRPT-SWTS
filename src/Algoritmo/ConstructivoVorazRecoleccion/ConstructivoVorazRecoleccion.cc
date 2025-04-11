@@ -26,10 +26,10 @@ ConstructivoVorazRecoleccion::ConstructivoVorazRecoleccion() {
 
 /** ConstructivoVorazRecoleccion::solve()
   * @brief Resuelve el problema de recolección de residuos.
-  * @return void
+  * @return this Devuelve el propio objeto para permitir la encadenación de llamadas.
   * @details Este algoritmo proporciona una solución guardada en su atributo rutas_ y también en el atributo Tareas_.
   */
-void ConstructivoVorazRecoleccion::solve() {
+ Algoritmo& ConstructivoVorazRecoleccion::solve() {
   const int DEPOSITO = 0;
   set<int> zonas_visitadas;
   this->rutas_.clear();
@@ -84,20 +84,21 @@ void ConstructivoVorazRecoleccion::solve() {
     } else { // si ha ido a una estación de transferencia
       id_zona_actual = 0; // lo pongo en positivo de nuevo
     }
-    Ruta ruta (ruta_actual);
+    RutaRecoleccion ruta (ruta_actual);
     ruta.set_nueva_parada(0); // añado la parada de vuelta al depósito
     ruta.calcular_circuitos();
     // cout << "Ruta: " << ruta << endl;
     this->rutas_.push_back(ruta);
   }
   // cout << "Se han visitado " << zonas_visitadas.size() << " zonas de recolección, con " << rutas_.size() << " vehículos" << endl;
+  return *this;
 }
 
 /** ConstructivoVorazRecoleccion::get_rutas()
   * @brief Devuelve las rutas de recolección.
   * @return vector<Ruta>&: vector de rutas
   */
-vector<Ruta>& ConstructivoVorazRecoleccion::get_rutas() {
+vector<RutaRecoleccion>& ConstructivoVorazRecoleccion::get_rutas() {
   return this->rutas_;
 }
 

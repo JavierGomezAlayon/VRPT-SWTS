@@ -15,7 +15,7 @@
 #ifndef C_Grasp_H
 #define C_Grasp_H
 #include"../Algoritmo.h"
-#include"../../Ruta/Ruta.h"
+#include"../../Ruta/RutaRecoleccion/RutaRecoleccion.h"
 #include"../../Estructuras_auxiliares/Tarea/Tarea.h"
 #include<ctime>
 #include<cstdlib>
@@ -24,13 +24,13 @@
 class Grasp : public Algoritmo {
  public:
   Grasp();
-  void solve() override;
-  vector<Ruta>& get_rutas();
+  Algoritmo& solve() override;
+  vector<RutaRecoleccion>& get_rutas();
   void set_amplitud_lista_random(int amplitud_lista_random);
  private:
   pair<int, double> obtener_zona_mas_cercana(int id_zona, int numero_de_zonas, char tipo_zona = 'R', const set<int>& zonas_visitadas = {}) const;
-  vector<Ruta> rutas_;
-  int amplitud_lista_random_ = 10; // número de zonas más cercanas que se van a considerar
+  vector<RutaRecoleccion> rutas_;
+  int amplitud_lista_random_ = 3; // número de zonas más cercanas que se van a considerar
 };
 
 #endif
