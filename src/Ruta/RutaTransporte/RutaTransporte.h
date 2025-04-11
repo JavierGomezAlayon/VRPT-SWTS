@@ -15,11 +15,19 @@
 #ifndef C_RutaTransporte_H
 #define C_RutaTransporte_H
 
-class RutaTransporte {
+#include"../Ruta.h"
+
+/**
+ * @brief Clase que representa una ruta de transporte de un vehículo de transporte.
+ * @details Esta clase se utiliza para representar la solución del problema de transporte.
+ *          Está compuesta por un vector de enteros que representan las paradas de la ruta.
+ *          En donde el 0 representa el dumpsite y los enteron positivos representan las estaciones de transferencia.
+ */
+class RutaTransporte : public Ruta {
  public:
   RutaTransporte();
- private:
- 
+  RutaTransporte(const vector<int>& paradas);
+
 };
 
 #endif

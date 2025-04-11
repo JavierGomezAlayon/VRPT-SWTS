@@ -20,6 +20,21 @@
   * @param 
   * @return objeto de la clase VehiculoTransporte
   */
-VehiculoTransporte::VehiculoTransporte() {
+VehiculoTransporte::VehiculoTransporte() {}
 
+/** VehiculoTransporte::VehiculoTransporte(int id_vehiculo, int id_zona_actual, double tiempo_restante, double capacidad_restante)
+  * @brief Crea el objeto de la clase VehiculoTransporte.
+  * @param id_vehiculo: id del vehículo
+  * @param id_zona_actual: id de la zona actual
+  * @param tiempo_restante: tiempo restante
+  * @param capacidad_restante: capacidad restante
+  * @return objeto de la clase VehiculoTransporte
+  */
+VehiculoTransporte::VehiculoTransporte(int id_vehiculo, int id_zona_actual, double tiempo_restante, double capacidad_restante) {
+  this->id_vehiculo_ = id_vehiculo;
+  this->id_zona_actual_ = id_zona_actual;
+  this->tiempo_restante_ = tiempo_restante;
+  this->capacidad_restante_ = capacidad_restante;
+  this->ruta_actual_ = {id_zona_actual};
 }
+

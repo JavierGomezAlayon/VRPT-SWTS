@@ -21,20 +21,7 @@
   * @return objeto de la clase Ruta
   */
 Ruta::Ruta() {
-  paradas_ = {0};
-}
-
-/** Ruta::Ruta(vector<int> paradas)
-  * @brief Crea el objeto de la clase Ruta.
-  * @param paradas: vector de enteros que representan las paradas SIN EL NÚMERO DE CIRCUITOS
-  * @return objeto de la clase Ruta
-  */
-Ruta::Ruta(vector<int> paradas) {
-  int paradas_size = paradas.size();
-  paradas_.resize(paradas_size + 1);
-  for (int i = 0; i < paradas_size; i++) { // meto todas las paradas pero desplazadas una posición
-    paradas_[i + 1] = paradas[i];
-  }
+  this->paradas_ = {};
 }
 
 /** Ruta::set_nueva_parada(int parada)
@@ -43,38 +30,7 @@ Ruta::Ruta(vector<int> paradas) {
   * @return void
   */
 void Ruta::set_nueva_parada(int parada) {
-  paradas_.push_back(parada);
-}
-
-/** Ruta::calcular_circuitos()
-  * @brief Calcula el número de circuitos de la ruta.
-  * @return void
-  */
-void Ruta::calcular_circuitos() {
-  int circuitos = 0;
-  int paradas_size = paradas_.size();
-  for (int i = 1; i < paradas_size; i++) {
-    if (paradas_[i] < 0) { // cada vez que pasa por una estación de transferencia
-      circuitos++;
-    }
-  }
-  paradas_[0] = circuitos;
-}
-
-
-/** Ruta::operator<<
-  * @brief Sobrecarga del operador << para imprimir la ruta.
-  * @param os: flujo de salida
-  * @param ruta: ruta a imprimir
-  * @return flujo de salida
-  */
-ostream& operator<<(ostream& os, const Ruta& ruta) {
-  os << "Ruta: ";
-  int paradas_size = ruta.paradas_.size();
-  for (int i = 0; i < paradas_size; i++) {
-    os << ruta.paradas_[i] << " ";
-  }
-  return os;
+  this->paradas_.push_back(parada);
 }
 
 /** Ruta::get_nodo(int posicion) const
@@ -83,15 +39,11 @@ ostream& operator<<(ostream& os, const Ruta& ruta) {
   * @return nodo de la ruta en la posición posicion
   */
 int Ruta::get_nodo(int posicion) const {
-  int paradas_size = paradas_.size();
+  int paradas_size = this->paradas_.size();
   if (posicion < 0 || posicion > paradas_size - 1) {
-    throw invalid_argument("posición fuera de rango");
+    throw invalid_argument("posición " + to_string(posicion) + " fuera de rango");
   }
-  if (posicion == 0 || posicion == paradas_size - 1) {
-    return 0; // el depósito
-  }
-  int indice = posicion + 1; // para quitar el primer elemento que es el número de circuitos
-  return paradas_[indice];
+  return this->paradas_[posicion];
 }
 
 /** Ruta::size() const
@@ -99,14 +51,6 @@ int Ruta::get_nodo(int posicion) const {
   * @return tamaño de la ruta
   */
 int Ruta::size() const {
-  return paradas_.size() - 1; // para quitar el primer elemento que es el número de circuitos
-}
-
-/** Ruta::get_circuitos() const
-  * @brief Devuelve el número de circuitos de la ruta.
-  * @return número de circuitos de la ruta
-  */
-int Ruta::get_circuitos() const {
-  return paradas_[0];
+  return this->paradas_.size() ; // para quitar el primer elemento que es el número de circuitos
 }
 

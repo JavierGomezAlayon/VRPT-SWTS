@@ -22,24 +22,16 @@ using namespace std;
 
 /**
  * @brief Clase que representa una ruta de un vehículo de recolección.
- * @details Esta clase se utiliza para representar la solución del problema de recolección.
+ * @details Esta clase se utiliza como clase padre para la representación de las soluciones de los distintos algoritmos.
  *          Está compuesta por un vector de enteros que representan las paradas de la ruta.
- *          En donde el 0 representa el depósito, los elementos negativos representan las estaciones de transferencia,
- *          y los elementos positivos representan las zonas.
- *          El primer número representa cuántos circuitos se han realizado en dicha ruta.
  */
 class Ruta {
  public:
   Ruta();  
-  Ruta(vector<int> paradas);
-  void set_nueva_parada(int parada);
-  void calcular_circuitos();
-  int get_nodo(int id) const;
-  int size() const;
-  int get_circuitos() const;
-
-  friend ostream& operator<<(ostream& os, const Ruta& ruta) ;
- private:
+  virtual void set_nueva_parada(int parada);
+  virtual int get_nodo(int id) const;
+  virtual int size() const = 0;
+ protected:
   vector<int> paradas_;
 };
 

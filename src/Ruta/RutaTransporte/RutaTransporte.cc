@@ -21,5 +21,14 @@
   * @return objeto de la clase RutaTransporte
   */
 RutaTransporte::RutaTransporte() {
+  this->paradas_ = {0};
+}
 
+/** RutaTransporte::RutaTransporte(vector<int> paradas)
+  * @brief Crea el objeto de la clase RutaTransporte.
+  * @param paradas: vector de enteros que representan las paradas SIN EL NÚMERO DE CIRCUITOS
+  * @return objeto de la clase RutaTransporte
+  */
+RutaTransporte::RutaTransporte(const vector<int>& paradas) {
+  this->paradas_ = paradas;
 }

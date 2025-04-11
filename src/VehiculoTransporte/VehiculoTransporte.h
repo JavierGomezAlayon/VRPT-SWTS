@@ -15,7 +15,9 @@
 #ifndef C_VehiculoTransporte_H
 #define C_VehiculoTransporte_H
 
-#include"../Ruta/Ruta.h"
+#include<vector>
+
+using namespace std;
 
 /**
  * @brief Clase que representa un vehículo de transporte.
@@ -24,13 +26,13 @@
 class VehiculoTransporte {
  public:
   VehiculoTransporte();
+  VehiculoTransporte(int id_vehiculo, int id_zona_actual, double tiempo_restante, double capacidad_restante);
  private:
   int id_vehiculo_;
   int id_zona_actual_;
   double tiempo_restante_;
   double capacidad_restante_; 
   vector<int> ruta_actual_;
-  double tiempo_regreso_;
 };
 
 #endif

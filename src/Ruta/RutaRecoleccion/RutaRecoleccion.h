@@ -6,20 +6,35 @@
 // Práctica 05 : VRPT-SWTS
 // Autor: javier Gómez Alayón
 // Correo: alu0101562445@ull.edu.es
-// Fecha: 04/11/25
+// Fecha: 03/29/25
 // Archivo RutaRecoleccion.h : Declaración de la clase RutaRecoleccion
 //        En este fichero se declara la clase RutaRecoleccion
 //
 // Historial de revisiones
-//        04/11/25 - Creación (primera versión) del código
+//        03/29/25 - Creación (primera versión) del código
 #ifndef C_RutaRecoleccion_H
 #define C_RutaRecoleccion_H
 
-class RutaRecoleccion {
+#include"../Ruta.h"
+
+/**
+ * @brief Clase que representa una rutaRecoleccion de un vehículo de recolección.
+ * @details Esta clase se utiliza para representar la solución del problema de recolección.
+ *          Está compuesta por un vector de enteros que representan las paradas de la rutaRecoleccion.
+ *          En donde el 0 representa el depósito, los elementos negativos representan las estaciones de transferencia,
+ *          y los elementos positivos representan las zonas.
+ *          El primer número representa cuántos circuitos se han realizado en dicha rutaRecoleccion.
+ */
+class RutaRecoleccion : public Ruta {
  public:
-  RutaRecoleccion();
- private:
- 
+  RutaRecoleccion();  
+  RutaRecoleccion(vector<int> paradas);
+  void calcular_circuitos();
+  int get_nodo(int id) const override;
+  int size() const override;
+  int get_circuitos() const;
+
+  friend ostream& operator<<(ostream& os, const RutaRecoleccion& rutaRecoleccion) ;
 };
 
 #endif
