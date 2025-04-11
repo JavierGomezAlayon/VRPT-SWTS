@@ -16,6 +16,7 @@
 #include<iostream>
 
 int main(int argc, char *argv[]) {
+  srand(time(0));
   //Compruebo si se han introducido los argumentos necesarios
   Dato datos;
   DatosProblema datos_problema;

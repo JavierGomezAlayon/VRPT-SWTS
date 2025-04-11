@@ -38,10 +38,12 @@ class DistanciaZonas {
   DistanciaZonas(vector<Zona*>& zonas);
   double get_distancia(int id_zona_a, int id_zona_b) const;
   pair<int, double> get_zona_mas_cercana(int id_zona_actual, const char tipo_zona_necesaria = 'R', const set<int>& nodos_visitados = {}) const;
+  int get_num_zonas_transferencia() const { return num_zonas_transferencia_; }
  private:
   vector<vector<double>> distancia_zonas_;
   int num_zonas_transferencia_;
   int num_zonas_recoleccion_;
+
 };
 
 #endif

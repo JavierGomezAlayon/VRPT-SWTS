@@ -29,6 +29,7 @@
 void ConstructivoVorazTransporte::solve() {
   this->CalcularTareas();
 
+
 }
 
 /** ConstructivoVorazTransporte::set_rutas(vector<Ruta>& rutas)
@@ -66,6 +67,8 @@ void ConstructivoVorazTransporte::CalcularTareas() {
           throw std::runtime_error("Un vehículo se ha llevado residuos al depósito");
         }
         if (tiempo > this->datos_problema_.duracion_maxima_recoleccion) {
+          cout << "ruta: " << ruta << endl;
+          cout << "tiempo: " << tiempo << endl;
           throw std::runtime_error("El tiempo de recolección supera el tiempo máximo permitido");
         }
       } else { // Si es una zona

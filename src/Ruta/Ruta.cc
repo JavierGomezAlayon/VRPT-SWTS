@@ -83,10 +83,11 @@ ostream& operator<<(ostream& os, const Ruta& ruta) {
   * @return nodo de la ruta en la posición posicion
   */
 int Ruta::get_nodo(int posicion) const {
-  if (posicion < 0 || posicion > paradas_.size() - 1) {
+  int paradas_size = paradas_.size();
+  if (posicion < 0 || posicion > paradas_size - 1) {
     throw invalid_argument("posición fuera de rango");
   }
-  if (posicion == 0 || posicion == paradas_.size() - 1) {
+  if (posicion == 0 || posicion == paradas_size - 1) {
     return 0; // el depósito
   }
   int indice = posicion + 1; // para quitar el primer elemento que es el número de circuitos

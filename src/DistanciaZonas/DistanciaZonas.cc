@@ -117,7 +117,7 @@ pair<int, double> DistanciaZonas::get_zona_mas_cercana(int id_zona_actual, const
       for (int i = indice_inicial; i < indice_final; i++) {
         id_zona_objetivo++;
         double distancia_actual = this->distancia_zonas_[id_zona_actual_index][i];
-        if (distancia_actual < distancia_mas_cercana) { // si la zona no ha sido recolectada y la distancia es menor que la más cercana
+        if (distancia_actual < distancia_mas_cercana && nodos_por_visitar.find(id_zona_objetivo) == nodos_por_visitar.end()) { // si la zona no ha sido recolectada y la distancia es menor que la más cercana
           distancia_mas_cercana = distancia_actual;
           id_zona_mas_cercana = id_zona_objetivo;
         }

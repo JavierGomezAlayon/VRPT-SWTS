@@ -23,7 +23,6 @@ class ConstructivoVorazRecoleccion : public Algoritmo {
   ConstructivoVorazRecoleccion();
   void solve() override;
   vector<Ruta>& get_rutas();
-  vector<Tarea>& get_tareas();
  private:
   vector<Ruta> rutas_;
 };

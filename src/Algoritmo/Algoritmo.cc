@@ -56,3 +56,4 @@ void Algoritmo::set_datos_problema(const DatosProblema& datos_problema) {
 void Algoritmo::set_distancia_zonas(const DistanciaZonas& distancia_zonas) {
   this->distancia_zonas_ = distancia_zonas;
 }
+
