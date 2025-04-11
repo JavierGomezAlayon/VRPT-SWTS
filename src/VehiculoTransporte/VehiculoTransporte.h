@@ -29,7 +29,7 @@ class VehiculoTransporte {
   int id_zona_actual_;
   double tiempo_restante_;
   double capacidad_restante_; 
-  Ruta ruta_actual_;
+  vector<int> ruta_actual_;
   double tiempo_regreso_;
 };
 

@@ -30,7 +30,7 @@ using namespace std;
  */
 class Ruta {
  public:
-  Ruta();
+  Ruta();  
   Ruta(vector<int> paradas);
   void set_nueva_parada(int parada);
   void calcular_circuitos();

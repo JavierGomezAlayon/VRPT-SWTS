@@ -25,6 +25,7 @@ class ConstructivoVorazTransporte : public Algoritmo {
   void set_rutas(vector<Ruta>& rutas);
  private:
   void CalcularTareas();
+  void CalcularRutasTransporte();
   vector<Tarea> tareas_;
   vector<Ruta> rutas_;
 };

@@ -67,8 +67,8 @@ void ConstructivoVorazTransporte::CalcularTareas() {
           throw std::runtime_error("Un vehículo se ha llevado residuos al depósito");
         }
         if (tiempo > this->datos_problema_.duracion_maxima_recoleccion) {
-          cout << "ruta: " << ruta << endl;
-          cout << "tiempo: " << tiempo << endl;
+          cerr << "ruta: " << ruta << endl;
+          cerr << "tiempo: " << tiempo << endl;
           throw std::runtime_error("El tiempo de recolección supera el tiempo máximo permitido");
         }
       } else { // Si es una zona
@@ -85,5 +85,13 @@ void ConstructivoVorazTransporte::CalcularTareas() {
   return;
 }
 
+/** ConstructivoVorazTransporte::CalcularRutasTransporte()
+  * @brief Calcula las rutas de transporte.
+  * @return void
+  * @details Esta función se encarga de calcular las rutas de transporte a partir de las tareas calculadas anteriormente.
+  *          Modifica el vector de rutas_ del objeto.
+  */
+void ConstructivoVorazTransporte::CalcularRutasTransporte() {
 
+}
 
