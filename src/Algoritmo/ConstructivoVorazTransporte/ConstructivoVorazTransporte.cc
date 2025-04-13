@@ -140,12 +140,12 @@ void ConstructivoVorazTransporte::CalcularRutasTransporte() {
   }
 
   // imprimo por pantalla las rutas de transporte
-  cout << "Rutas de transporte:" << endl;
-  for (const RutaTransporte& ruta : this->rutas_transporte_) {
-    cout << ruta << endl;
-  }
-  // imprimo por pantalla los vehículos de transporte
-  cout << "Vehículos de transporte:" << this->vehiculos_transporte_.size() << endl;
+  // cout << "Rutas de transporte:" << endl;
+  // for (const RutaTransporte& ruta : this->rutas_transporte_) {
+  //   cout << ruta << endl;
+  // }
+  // // imprimo por pantalla los vehículos de transporte
+  // cout << "Vehículos de transporte:" << this->vehiculos_transporte_.size() << endl;
   VehiculoTransporte::resetIdVehiculo();
   return;
 }
