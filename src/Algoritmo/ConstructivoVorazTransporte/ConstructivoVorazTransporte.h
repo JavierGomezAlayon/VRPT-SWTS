@@ -18,18 +18,24 @@
 #include"../../Ruta/RutaRecoleccion/RutaRecoleccion.h"
 #include"../../Ruta/RutaTransporte/RutaTransporte.h"
 #include"../../Estructuras_auxiliares/Tarea/Tarea.h"
+#include"../../VehiculoTransporte/VehiculoTransporte.h"
 
 class ConstructivoVorazTransporte : public Algoritmo {
  public:
   ConstructivoVorazTransporte();
   Algoritmo& solve() override;
   Algoritmo& set_rutas(vector<RutaRecoleccion> rutas);
+  vector<RutaTransporte>& get_rutas();
  private:
   void CalcularTareas();
   void CalcularRutasTransporte();
+  VehiculoTransporte* ElegirVehiculoTransporte(Tarea& tarea);
+  double CalcularCosteInsercion(Tarea& tarea, VehiculoTransporte& vehiculo_transporte);
+  double BuscarMinimoWaste();
   vector<Tarea> tareas_;
   vector<RutaTransporte> rutas_transporte_;
   vector<RutaRecoleccion> rutas_recoleccion_;
+  vector<VehiculoTransporte> vehiculos_transporte_;
 };
 
-#endif
+#endif // C_ConstructivoVorazTransporte_H

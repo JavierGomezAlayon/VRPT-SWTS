@@ -62,17 +62,21 @@ DistanciaZonas::DistanciaZonas(vector<Zona*>& zonas) {
   * @details Las zonas se enumeran de la siguiente manera:
   *          Zona de recolección: 1... num_zonas_recoleccion_
   *          Zona de transferencia: -1, -2, ... -num_zonas_transferencia_
-  *          Zona de vertedero: INFINITY
+  *          Zona de vertedero: std::numeric_limits<int>::max()
   *          Zona de depósito: 0
   * @return double: distancia entre las zonas
   */
 double DistanciaZonas::get_distancia(int id_zona_a, int id_zona_b) const {
+  const int VERTEDERO = std::numeric_limits<int>::max();
+  if (id_zona_a > num_zonas_recoleccion_ || id_zona_b > num_zonas_recoleccion_ || id_zona_a < -num_zonas_transferencia_ || id_zona_b < -num_zonas_transferencia_) {
+    // Laznar error
+  }
   if (id_zona_a == id_zona_b) {
     return INFINITY;
   }
-  if (id_zona_a == INFINITY || id_zona_b == INFINITY) {
-    id_zona_a = id_zona_a == INFINITY ? num_zonas_recoleccion_ + 1 : id_zona_a; // si es el vertedero, lo cambio por el último elemento del vector
-    id_zona_b = id_zona_b == INFINITY ? num_zonas_recoleccion_ + 1 : id_zona_b; // si es el vertedero, lo cambio por el último elemento del vector
+  if (id_zona_a == VERTEDERO || id_zona_b == VERTEDERO) {
+    id_zona_a = id_zona_a == VERTEDERO ? num_zonas_recoleccion_ + 1 : id_zona_a; // si es el vertedero, lo cambio por el último elemento del vector
+    id_zona_b = id_zona_b == VERTEDERO ? num_zonas_recoleccion_ + 1 : id_zona_b; // si es el vertedero, lo cambio por el último elemento del vector
   }
   /* Combierto los id de las zonas a índices.
    Le sumo el número de zonas de transferencia para que sea el índice ya que el id más negativo es el número de zonas de 

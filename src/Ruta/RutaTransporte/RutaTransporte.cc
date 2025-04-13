@@ -32,3 +32,17 @@ RutaTransporte::RutaTransporte() {
 RutaTransporte::RutaTransporte(const vector<int>& paradas) {
   this->paradas_ = paradas;
 }
+
+/** RutaTransporte::operator<<
+  * @brief Sobrecarga del operador << para imprimir la ruta.
+  * @param os: flujo de salida
+  * @param ruta: ruta a imprimir
+  * @return flujo de salida
+  */
+ostream& operator<<(ostream& os, const RutaTransporte& ruta) {
+  int ruta_size = ruta.paradas_.size();
+  for (int i = 0; i < ruta_size; i++) {
+    os << ruta.paradas_[i] << " ";
+  }
+  return os;
+}

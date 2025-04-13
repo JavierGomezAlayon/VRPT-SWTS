@@ -30,7 +30,7 @@ class Ruta {
   Ruta();  
   virtual void set_nueva_parada(int parada);
   virtual int get_nodo(int id) const;
-  virtual int size() const = 0;
+  virtual int size() const;
  protected:
   vector<int> paradas_;
 };

@@ -16,6 +16,7 @@
 #define C_RutaTransporte_H
 
 #include"../Ruta.h"
+#include<iostream>
 
 /**
  * @brief Clase que representa una ruta de transporte de un vehículo de transporte.
@@ -27,6 +28,7 @@ class RutaTransporte : public Ruta {
  public:
   RutaTransporte();
   RutaTransporte(const vector<int>& paradas);
+  friend ostream& operator<<(ostream& os, const RutaTransporte& ruta);
 
 };
 
