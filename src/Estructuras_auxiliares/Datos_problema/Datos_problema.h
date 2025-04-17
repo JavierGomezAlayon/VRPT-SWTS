@@ -33,6 +33,14 @@ struct DatosProblema {
   int capacidad_vehiculo_transporte;
   int velocidad_vehiculo;
   vector<Zona*> zonas;
+  Zona* obtener_zona(int id_zona) const {
+    for (const auto& zona : zonas) {
+      if (zona->get_id_zona() == id_zona) {
+        return zona;
+      }
+    }
+    return nullptr;
+  }
   // Cordenadas cord_deposito;
   // vector<Cordenadas> cord_estaciones_transferencia;
   // Cordenadas cord_Deposito;

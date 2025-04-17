@@ -30,6 +30,7 @@ class RutaTransporte : public Ruta {
   RutaTransporte(const vector<int>& paradas);
   friend ostream& operator<<(ostream& os, const RutaTransporte& ruta);
 
+
 };
 
 #endif

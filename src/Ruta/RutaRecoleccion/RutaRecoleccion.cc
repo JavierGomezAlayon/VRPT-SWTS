@@ -103,3 +103,55 @@ int RutaRecoleccion::get_circuitos() const {
   return this->paradas_[0];
 }
 
+/** RutaRecoleccion::swap(int indice1, int indice2)
+  * @brief Intercambia dos nodos de la rutaRecoleccion.
+  * @param indice1: índice del primer nodo
+  * @param indice2: índice del segundo nodo
+  * @return void
+  */
+void RutaRecoleccion::swap(int indice1, int indice2) {
+  if (indice1 < 0 || indice1 >= this->paradas_.size() || indice2 < 0 || indice2 >= this->paradas_.size()) {
+    throw std::out_of_range("Índice fuera de rango");
+  }
+  indice1++;
+  indice2++;
+  int temp = this->paradas_[indice1];
+  this->paradas_[indice1] = this->paradas_[indice2];
+  this->paradas_[indice2] = temp;
+  return;
+}
+
+/** RutaRecoleccion::factible(DatosProblema& datos_problema, DistanciaZonas& distancia_zonas)
+  * @brief Comprueba si la rutaRecoleccion es factible.
+  * @param datos_problema: datos del problema
+  * @param distancia_zonas: distancias entre zonas
+  * @return true si es factible, false en caso contrario
+  */
+bool RutaRecoleccion::factible(DatosProblema& datos_problema, DistanciaZonas& distancia_zonas) {
+  double tiempo_total = 0;
+  double cantidad_residuos = 0;
+  int paradas_size = this->paradas_.size();
+  for(int i = 2; i < paradas_size; i++) { // recorro los nodos sin contar el número de circuitos
+    int indice_nodo = this->paradas_[i];
+    tiempo_total += distancia_zonas.get_distancia(this->paradas_[i - 1], indice_nodo) * 60 / datos_problema.velocidad_vehiculo; // calculo el tiempo entre el nodo anterior y el nodo actual
+    if (indice_nodo < 0) { // Si es una estación de transferencia
+      if (cantidad_residuos > datos_problema.capacidad_vehiculo_recoleccion) {
+        return false; // La cantidad de residuos supera la capacidad del vehículo
+      }
+      cantidad_residuos = 0; // Reseteo la cantidad de residuos
+    } else if (indice_nodo == 0) { // Si es el depósito
+      if (cantidad_residuos > 0) {
+        return false; // No se puede llevar residuos al depósito
+      }
+      if (tiempo_total > datos_problema.duracion_maxima_recoleccion) {
+        return false; // el tiempo total supera el máximo
+      }
+    } else { // Si es una zona
+      cantidad_residuos += datos_problema.obtener_zona(indice_nodo)->get_demanda();
+      tiempo_total += datos_problema.obtener_zona(indice_nodo)->get_tiempo();
+    }
+  } 
+  return true;
+}
+
+

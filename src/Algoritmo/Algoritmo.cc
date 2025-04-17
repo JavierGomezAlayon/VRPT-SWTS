@@ -31,7 +31,7 @@ Algoritmo::Algoritmo() {
   */
 Zona* Algoritmo::obtener_zona(int id_zona) const {
   int num_zonas = this->datos_problema_.zonas.size();
-for (int i = 0; i < num_zonas; i++) {
+  for (int i = 0; i < num_zonas; i++) {
     if (this->datos_problema_.zonas[i]->get_id_zona() == id_zona) {
       return this->datos_problema_.zonas[i];
     }

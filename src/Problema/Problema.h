@@ -23,6 +23,7 @@
 #include"../Algoritmo/ConstructivoVorazRecoleccion/ConstructivoVorazRecoleccion.h"
 #include"../Algoritmo/ConstructivoVorazTransporte/ConstructivoVorazTransporte.h"
 #include"../Algoritmo/Grasp/Grasp.h"
+#include"../Algoritmo/VND/VND.h"
 #include"../DistanciaZonas/DistanciaZonas.h"
 #include"../Estructuras_auxiliares/Datos_problema/Datos_problema.h"
 #include"../Estructuras_auxiliares/Tarea/Tarea.h"

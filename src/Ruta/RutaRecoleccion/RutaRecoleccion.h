@@ -16,6 +16,8 @@
 #define C_RutaRecoleccion_H
 
 #include"../Ruta.h"
+#include "../../Estructuras_auxiliares/Datos_problema/Datos_problema.h"
+#include"../../DistanciaZonas/DistanciaZonas.h"
 
 /**
  * @brief Clase que representa una rutaRecoleccion de un vehículo de recolección.
@@ -33,6 +35,9 @@ class RutaRecoleccion : public Ruta {
   int get_nodo(int id) const override;
   int size() const override;
   int get_circuitos() const;
+  void swap(int indice1, int indice2);
+  bool factible(DatosProblema& datos_problema, DistanciaZonas& distancia_zonas);
+  // double get_distancia() const;
 
   friend ostream& operator<<(ostream& os, const RutaRecoleccion& rutaRecoleccion) ;
 };
