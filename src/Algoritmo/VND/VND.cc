@@ -34,11 +34,12 @@ VND::VND() {
   */
 Algoritmo& VND::solve() {
   crear_busquedas_locales();
-  // cout << "Rutas de recoleccion iniciales" << endl;
-  // for (int i = 0; i < this->rutas_.size(); i++) {
-  //   cout << this->rutas_[i] << endl;
-  // }
-  // cout << endl;
+  cout << "Rutas de recoleccion iniciales" << endl;
+  for (int i = 0; i < this->rutas_.size(); i++) {
+    cout << this->rutas_[i] << endl;
+  }
+  cout << "Coste inicial: " << this->evaluar_rutas(this->rutas_) << endl;
+  cout << endl;
   // la máscara la pongo a 1 para que todas las búsquedas se ejecuten
   unsigned int bitmask = (1 << this->busquedas_locales_.size()) - 1;
   bool mejora = false;
@@ -52,13 +53,17 @@ Algoritmo& VND::solve() {
     // for (int i = 0; i < this->rutas_.size(); i++) {
     //   cout << this->rutas_[i] << endl;
     // }
+    // cout << "B: " << indice_busqueda_local << endl;
     
     // ejecuto la búsqueda local hasta encontrar un óptimo
     BusquedaLocal* busqueda_local = this->busquedas_locales_[indice_busqueda_local]; 
     bool mejorado = false;
+    for (int i = 0; i < rutas_size; i++) {
+      this->rutas_[i].calcular_circuitos();
+    }
     if (busqueda_local->rutas_necesarias() == 1) {
       do {
-        // double coste_ruta_inicial = this->evaluar_rutas(this->rutas_);
+        double coste_ruta_inicial = this->evaluar_rutas(this->rutas_);
         double coste_minimo = 0;
         mejora = false;
         coste_minimo = 0;
@@ -71,7 +76,7 @@ Algoritmo& VND::solve() {
           pair<pair<RutaRecoleccion, RutaRecoleccion>, double> sol_busqueda = busqueda_local->ejecutar(ruta_actual); // me da la mejor ruta de todas los vecinos posibles ante esta combinación de ruta.
           RutaRecoleccion& ruta_optimo_local = sol_busqueda.first.first; // me da la mejor ruta de todas los vecinos posibles ante esta combinación de ruta.
           coste = sol_busqueda.second; // me da el coste de la mejora
-          if (coste < coste_minimo) {
+          if (std::abs(coste - coste_minimo) > 1e-6 && coste < 0) {
             mejora = true;
             mejorado = true;
             mejor_ruta = ruta_optimo_local;
@@ -81,6 +86,13 @@ Algoritmo& VND::solve() {
             // cout << coste_ruta_inicial << coste << " = " << coste_ruta_final << endl;
             // cout << "lo que tendría que ser: " << coste_ruta_inicial + coste << endl;
             // std::this_thread::sleep_for(std::chrono::seconds(1));
+            // coste_ruta_inicial = coste_ruta_final;
+            // double coste_ruta_final = this->evaluar_rutas(this->rutas_);
+            // if (std::abs(coste_ruta_inicial + coste - std::round(coste_ruta_final * 100) / 100) > 1e-2) {
+            //   cout << "ERRROOORRRR --------------------------------------------------------------------------------------------------------------" << endl;
+            //   cout << "tendría que ser: " << coste_ruta_inicial + coste << endl;
+            // }
+            // cout << coste_ruta_inicial << coste << " = " << coste_ruta_final << endl;
             // coste_ruta_inicial = coste_ruta_final;
           }
         }
@@ -117,11 +129,15 @@ Algoritmo& VND::solve() {
         }
         this->rutas_[indice1] = mejor_ruta.first; // actualizo la ruta
         this->rutas_[indice2] = mejor_ruta.second; // actualizo la ruta
+        // const double coste_ruta_final = this->evaluar_rutas(this->rutas_);
+        // cout << coste_ruta_inicial << coste_minimo << " = " << coste_ruta_final << endl;
+        // if (std::abs(coste_ruta_inicial + coste_minimo - std::round(coste_ruta_final * 100) / 100) > 1e-2) {
+        //   cout << "ERRROOORRRR --------------------------------------------------------------------------------------------------------------" << endl;
+        //   cout << "tendría que ser: " << coste_ruta_inicial + coste_minimo << endl;
+        // }
         // for (int i = 0; i < this->rutas_.size(); i++) {
         //   cout << this->rutas_[i].get_distancia_total(this->distancia_zonas_) << endl;
         // }
-        const double coste_ruta_final = this->evaluar_rutas(this->rutas_);
-        cout << coste_ruta_inicial << coste_minimo << " = " << coste_ruta_final << endl;
         // std::this_thread::sleep_for(std::chrono::seconds(1));
       } while (mejora == true);
     }
@@ -162,6 +178,15 @@ Algoritmo& VND::set_rutas(vector<RutaRecoleccion> rutas) {
  * @details Esta función se encarga de devolver las rutas óptimas.
  */
 vector<RutaRecoleccion>& VND::get_rutas_optimas() {
+  cout << "Rutas de recolección:" << endl;
+  for (const RutaRecoleccion& ruta : this->rutas_) {
+    if (ruta.factible(this->datos_problema_, this->distancia_zonas_)) {
+      cout << ruta << endl;
+    } else {
+      cout << "Ruta no factible" << endl;
+    }
+  }
+  cout << "distancia de la ruta: " << this->evaluar_rutas(this->rutas_) << endl;
   return this->rutas_;
 }
 
@@ -177,8 +202,8 @@ void VND::crear_busquedas_locales() {
   this->busquedas_locales_.push_back(&(new AdjentSwap())->set_datos(this->datos_problema_, this->distancia_zonas_));
   this->busquedas_locales_.push_back(&(new Swap())->set_datos(this->datos_problema_, this->distancia_zonas_));
   this->busquedas_locales_.push_back(&(new Swap2vect())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  this->busquedas_locales_.push_back(&(new SubrutaSwap())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  // this->busquedas_locales_.push_back(&(new Insertion())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  // this->busquedas_locales_.push_back(&(new SubrutaSwap())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  this->busquedas_locales_.push_back(&(new Insertion())->set_datos(this->datos_problema_, this->distancia_zonas_));
 }
 
 

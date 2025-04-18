@@ -31,7 +31,9 @@ int main(int argc, char *argv[]) {
       return 1;
     }
     Problema problema(datos_problema);
-    cout << "instancia " << i << endl;
+
+    cout << "\nINSTANCIA " << i << endl;
+    cout << endl;
     try {
       problema.solve();
     } catch (std::exception &e) {

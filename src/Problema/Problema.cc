@@ -61,21 +61,25 @@ void Problema::solve() {
   // mejoro la solución con busqueda local
   this->algoritmos_[3]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
   dynamic_cast<VND*>(this->algoritmos_[3])->set_rutas(rutas_recoleccion).solve();
-
-  // lo resuelvo con el algoritmo constructivo voraz de transporte
-  this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
-  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_recoleccion).solve();
-  vector<RutaTransporte> rutas_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
-
-  // lo resuelvo con el algoritmo GRASP
-  this->algoritmos_[2]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas).solve();
-  vector<RutaRecoleccion> rutas_grasp = dynamic_cast<Grasp*>(this->algoritmos_[2])->get_rutas();
-
-  // Mejoro las rutas de recolección por medio de las busquedas locales
-
+  rutas_recoleccion = dynamic_cast<VND*>(this->algoritmos_[3])->get_rutas_optimas();
+  // imprimo por pantalla las rutas de recolección
   
-  // lo resuelvo con el algoritmo constructivo voraz de transporte
-  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_grasp).solve();
-  vector<RutaTransporte> rutas_grasp_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
+
+
+  // // lo resuelvo con el algoritmo constructivo voraz de transporte
+  // this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  // dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_recoleccion).solve();
+  // vector<RutaTransporte> rutas_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
+// 
+  // // lo resuelvo con el algoritmo GRASP
+  // this->algoritmos_[2]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas).solve();
+  // vector<RutaRecoleccion> rutas_grasp = dynamic_cast<Grasp*>(this->algoritmos_[2])->get_rutas();
+// 
+  // // Mejoro las rutas de recolección por medio de las busquedas locales
+// 
+  // 
+  // // lo resuelvo con el algoritmo constructivo voraz de transporte
+  // dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_grasp).solve();
+  // vector<RutaTransporte> rutas_grasp_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
 
 }

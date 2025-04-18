@@ -40,8 +40,8 @@ class RutaRecoleccion : public Ruta {
   vector<int> get_subruta(int id) const;
   void quitar_parada(int indice);
   void anadir_parada(int parada, int indice);
-  double get_distancia_total(DistanciaZonas& distancia_zonas)const;
-  bool factible(DatosProblema& datos_problema, DistanciaZonas& distancia_zonas);
+  double get_distancia_total(const DistanciaZonas& distancia_zonas) const;
+  bool factible(const DatosProblema& datos_problema, const DistanciaZonas& distancia_zonas) const;
   // double get_distancia() const;
 
   friend ostream& operator<<(ostream& os, const RutaRecoleccion& rutaRecoleccion) ;

@@ -48,6 +48,7 @@ pair<pair<RutaRecoleccion, RutaRecoleccion>, double> SubrutaSwap::ejecutar(const
       // detecto la subruta y sus nodos
       vector<int> subruta1 = ruta_actual1.get_subruta(i);
       vector<int> subruta2 = ruta_actual2.get_subruta(j);
+      if (subruta1.size() < 3 || subruta2.size() < 3) { continue; } // si la subruta es de tamaño 1, no puedo intercambiar nada
       // el primer número de la subruta es el índice inicial
       int indice_subruta1 = subruta1[0];
       int indice_subruta2 = subruta2[0];

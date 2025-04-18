@@ -128,7 +128,7 @@ void RutaRecoleccion::swap(int indice1, int indice2) {
   * @param distancia_zonas: distancias entre zonas
   * @return true si es factible, false en caso contrario
   */
-bool RutaRecoleccion::factible(DatosProblema& datos_problema, DistanciaZonas& distancia_zonas) {
+bool RutaRecoleccion::factible(const DatosProblema& datos_problema, const DistanciaZonas& distancia_zonas) const {
   double tiempo_total = 0;
   double cantidad_residuos = 0;
   int paradas_size = this->paradas_.size();
@@ -224,7 +224,11 @@ void RutaRecoleccion::quitar_parada(int indice) {
   */
 void RutaRecoleccion::anadir_parada(int parada, int indice) {
   int paradas_size = this->paradas_.size();
-  if (indice < 0 || indice >= paradas_size - 1) {
+  if (indice == paradas_size - 1) {
+    this->paradas_.push_back(parada);
+    return;
+  }
+  if (indice < 0 || indice > paradas_size - 1) {
     throw std::out_of_range("Índice fuera de rango");
   }
   this->paradas_.insert(this->paradas_.begin() + indice + 1, parada);
@@ -234,7 +238,7 @@ void RutaRecoleccion::anadir_parada(int parada, int indice) {
   * @brief Devuelve la distancia total de la rutaRecoleccion.
   * @return distancia total de la rutaRecoleccion
   */
-double RutaRecoleccion::get_distancia_total(DistanciaZonas& distancia_zonas) const {
+double RutaRecoleccion::get_distancia_total(const DistanciaZonas& distancia_zonas) const {
   double distancia_total = 0;
   int paradas_size = this->paradas_.size();
   for (int i = 2; i < paradas_size; i++) {
