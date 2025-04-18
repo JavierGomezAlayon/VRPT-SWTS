@@ -36,6 +36,11 @@ class RutaRecoleccion : public Ruta {
   int size() const override;
   int get_circuitos() const;
   void swap(int indice1, int indice2);
+  int intercambiar_parada(int parada, int indice);
+  vector<int> get_subruta(int id) const;
+  void quitar_parada(int indice);
+  void anadir_parada(int parada, int indice);
+  double get_distancia_total(DistanciaZonas& distancia_zonas)const;
   bool factible(DatosProblema& datos_problema, DistanciaZonas& distancia_zonas);
   // double get_distancia() const;
 

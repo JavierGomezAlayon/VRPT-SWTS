@@ -80,7 +80,7 @@ ostream& operator<<(ostream& os, const RutaRecoleccion& rutaRecoleccion) {
   */
 int RutaRecoleccion::get_nodo(int posicion) const {
   int paradas_size = this->paradas_.size();
-  if (posicion == 0 || posicion == paradas_size - 2) {
+  if (posicion == 0 || posicion == paradas_size - 1) {
     return 0; // el depósito
   }
   int indice = posicion + 1; // para quitar el primer elemento que es el número de circuitos
@@ -110,7 +110,8 @@ int RutaRecoleccion::get_circuitos() const {
   * @return void
   */
 void RutaRecoleccion::swap(int indice1, int indice2) {
-  if (indice1 < 0 || indice1 >= this->paradas_.size() || indice2 < 0 || indice2 >= this->paradas_.size()) {
+  int paradas_size = this->paradas_.size();
+  if (indice1 < 0 || indice1 >= paradas_size || indice2 < 0 || indice2 >= paradas_size) {
     throw std::out_of_range("Índice fuera de rango");
   }
   indice1++;
@@ -154,4 +155,91 @@ bool RutaRecoleccion::factible(DatosProblema& datos_problema, DistanciaZonas& di
   return true;
 }
 
+/** RutaRecoleccion::intercambiar_parada(int parada, int indice)
+  * @brief Intercambia una parada de la rutaRecoleccion.
+  * @param parada: parada a intercambiar
+  * @param indice: índice de la parada a intercambiar
+  * @return void
+  * @details Esta función borra el índice de la parada y añade la nueva parada en la posición del índice.
+  */
+int RutaRecoleccion::intercambiar_parada(int parada, int indice) {
+  int paradas_size = this->paradas_.size();
+  if (indice < 0 || indice >= paradas_size) {
+    throw std::out_of_range("Índice fuera de rango");
+  }
+  int anterior = this->paradas_[indice + 1]; // Borra el índice de la parada
+  this->paradas_[indice + 1] = parada;
+  return anterior;
+}
+
+
+/** RutaRecoleccion::get_subruta(int id) const
+  * @brief Devuelve la subruta de la rutaRecoleccion.
+  * @param id: id de la subruta
+  * @return vector<int> con la subruta
+  */
+vector<int> RutaRecoleccion::get_subruta(int id) const {
+  int paradas_size = this->paradas_.size();
+  if (id < 1 || id > this->get_circuitos()) {
+    throw std::out_of_range("Índice fuera de rango");
+  }
+  vector<int> subruta;
+  int subruta_actual = 1;
+  // recorro la rutaRecoleccion y guardo la subruta
+  for (int i = 2; i < paradas_size; i++) {
+    if (subruta_actual == id) {
+      if (subruta.empty()) {
+        subruta.push_back(i - 1); // el primer número de la subruta es el índice inicial
+      }
+      subruta.push_back(this->paradas_[i]);
+    }
+    if (this->paradas_[i] < 0) { // cada vez que pasa por una estación de transferencia
+      subruta_actual++;
+    }
+  }
+  return subruta;
+}
+
+/** RutaRecoleccion::quitar_parada(int indice)
+  * @brief Quita una parada de la rutaRecoleccion.
+  * @param indice: índice de la parada a quitar
+  * @details Se quita la parada en el índice dado
+  * @return void
+  */
+void RutaRecoleccion::quitar_parada(int indice) {
+  int paradas_size = this->paradas_.size();
+  if (indice < 0 || indice > paradas_size - 1) {
+    throw std::out_of_range("Índice fuera de rango");
+  }
+  this->paradas_.erase(this->paradas_.begin() + indice + 1);
+}
+
+
+/** RutaRecoleccion::anadir_parada(int parada, int indice)
+  * @brief Añade una parada a la rutaRecoleccion.
+  * @param parada: parada a añadir
+  * @param indice: índice de la parada a añadir
+  * @details Se inserta la parada justo antes del índice dado (es decir, se mueve todo a la derecha (incluido el índice)).
+  * @return void
+  */
+void RutaRecoleccion::anadir_parada(int parada, int indice) {
+  int paradas_size = this->paradas_.size();
+  if (indice < 0 || indice >= paradas_size - 1) {
+    throw std::out_of_range("Índice fuera de rango");
+  }
+  this->paradas_.insert(this->paradas_.begin() + indice + 1, parada);
+}
+
+/** RutaRecoleccion::get_distancia_total() const
+  * @brief Devuelve la distancia total de la rutaRecoleccion.
+  * @return distancia total de la rutaRecoleccion
+  */
+double RutaRecoleccion::get_distancia_total(DistanciaZonas& distancia_zonas) const {
+  double distancia_total = 0;
+  int paradas_size = this->paradas_.size();
+  for (int i = 2; i < paradas_size; i++) {
+    distancia_total += distancia_zonas.get_distancia(this->paradas_[i - 1], this->paradas_[i]);
+  }
+  return distancia_total;
+}
 

@@ -40,8 +40,8 @@ pair<pair<RutaRecoleccion, RutaRecoleccion>, double> Swap::ejecutar(const RutaRe
       // Comprobar si la ruta es factible
       if (!ruta_actual.factible(this->datos_problema_, this->distancia_zonas_)) { continue; } // si no es factible, no lo tengo en cuenta
       // Calcular coste 
-      double distancia_quitada = this->distancia_zonas_.get_distancia(ruta1.get_nodo(i-1), ruta1.get_nodo(i)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(j+1), ruta1.get_nodo(j));
-      double distancia_anadida = this->distancia_zonas_.get_distancia(ruta1.get_nodo(i-1), ruta1.get_nodo(j)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(i), ruta1.get_nodo(j+1));
+      double distancia_quitada = this->distancia_zonas_.get_distancia(ruta1.get_nodo(i-1), ruta1.get_nodo(i)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(j-1), ruta1.get_nodo(j)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(i), ruta1.get_nodo(i+1)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(j), ruta1.get_nodo(j+1));
+      double distancia_anadida = this->distancia_zonas_.get_distancia(ruta1.get_nodo(i-1), ruta1.get_nodo(j)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(i + 1), ruta1.get_nodo(j)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(j-1), ruta1.get_nodo(i)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(j + 1), ruta1.get_nodo(i));
       double coste = distancia_anadida - distancia_quitada;
       if (coste < mejor_coste) {
         mejor_coste = coste;

@@ -19,7 +19,6 @@
 #include"../Algoritmo.h"
 #include"../../BusquedaLocal/Swap/Swap.h"
 #include"../../BusquedaLocal/AdjentSwap/AdjentSwap.h"
-#include"../../BusquedaLocal/Adjent2Swap2Vect/Adjent2Swap2Vect.h"
 #include"../../BusquedaLocal/Insertion/Insertion.h"
 #include"../../BusquedaLocal/SubrutaSwap/SubrutaSwap.h"
 #include"../../BusquedaLocal/Swap2vect/Swap2vect.h"
@@ -38,6 +37,7 @@ class VND : public Algoritmo {
   vector<RutaRecoleccion>& get_rutas_optimas();
  private:
   void crear_busquedas_locales();
+  double evaluar_rutas(const vector<RutaRecoleccion>& rutas);
   vector<BusquedaLocal*> busquedas_locales_;
   vector<RutaRecoleccion> rutas_;
 };

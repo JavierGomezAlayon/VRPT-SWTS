@@ -69,6 +69,6 @@ int AdjentSwap::rutas_necesarias() {
  * @return double: coste de la mejora
  */
 double AdjentSwap::calcular_coste(const RutaRecoleccion& ruta1, const RutaRecoleccion& ruta_optima1, const RutaRecoleccion& ruta2, const RutaRecoleccion& ruta_optima2) {
-  double coste = 0;
+  //double coste = 0;
   return 0;
 }

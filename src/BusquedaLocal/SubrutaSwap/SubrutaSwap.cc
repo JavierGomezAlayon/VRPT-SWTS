@@ -31,9 +31,89 @@ SubrutaSwap::SubrutaSwap() {
  * @param ruta2: Ruta de transporte
  * @return pair<pair<RutaRecoleccion, RutaRecoleccion>, double>: par de rutas modificadas y el coste de la mejora
  * @details Esta función se encarga de ejecutar la búsqueda local SubrutaSwap.
+ * No mejora en nada la ruta de recolección.
  */
 pair<pair<RutaRecoleccion, RutaRecoleccion>, double> SubrutaSwap::ejecutar(const RutaRecoleccion& ruta1, const RutaRecoleccion& ruta2) {
-  return {{ruta1, ruta2}, 0};
+  RutaRecoleccion ruta_actual1 = ruta1;
+  RutaRecoleccion ruta_actual2 = ruta2;
+  RutaRecoleccion mejor_ruta1 = ruta1;
+  RutaRecoleccion mejor_ruta2 = ruta2;
+  double mejor_coste = 0;
+  int subrutas1 = ruta_actual1.get_circuitos();
+  int subrutas2 = ruta_actual2.get_circuitos();
+  for (int i = 1; i <= subrutas1; i++) {
+    for (int j = 1; j <= subrutas2; j++) {
+      ruta_actual1 = ruta1;
+      ruta_actual2 = ruta2;
+      // detecto la subruta y sus nodos
+      vector<int> subruta1 = ruta_actual1.get_subruta(i);
+      vector<int> subruta2 = ruta_actual2.get_subruta(j);
+      // el primer número de la subruta es el índice inicial
+      int indice_subruta1 = subruta1[0];
+      int indice_subruta2 = subruta2[0];
+      // elimino el primer número de la subruta
+      subruta1.erase(subruta1.begin());
+      subruta2.erase(subruta2.begin());
+
+      int subruta1_size = subruta1.size();
+      int subruta2_size = subruta2.size();
+      // Intercambiar los nodos
+      if (subruta1_size == subruta2_size) {
+        for (int k = 0; k < subruta1_size; k++) {
+          ruta_actual1.intercambiar_parada(subruta2[k], k + indice_subruta1);
+          ruta_actual2.intercambiar_parada(subruta1[k], k + indice_subruta2);
+        }
+      } else {
+        int diferencia = subruta1_size - subruta2_size;
+        if (diferencia > 0) { // la subruta 1 es más larga
+          // Intercambiar los nodos de la subruta más corta
+          for (int k = 0; k < subruta2_size; k++) {
+            ruta_actual1.intercambiar_parada(subruta2[k], k + indice_subruta1);
+          }
+          for (int k = 0; k < diferencia; k++) {
+            ruta_actual1.quitar_parada(k + indice_subruta1 + subruta2_size);
+          }
+          // Intercambiar los nodos de la subruta más larga
+          for (int k = 0; k < subruta2_size; k++) {
+            ruta_actual2.intercambiar_parada(subruta1[k], k + indice_subruta2);
+          }
+          for (int k = 0; k < diferencia; k++) {
+            ruta_actual2.anadir_parada(subruta1[k + subruta2_size], k + indice_subruta2 + subruta2_size);
+          }
+        } else { // la subruta 2 es más larga
+          // Intercambiar los nodos de la subruta más corta
+          for (int k = 0; k < subruta1_size; k++) {
+            ruta_actual2.intercambiar_parada(subruta1[k], k + indice_subruta2);
+          }
+          for (int k = 0; k < -diferencia; k++) {
+            ruta_actual2.quitar_parada(k + indice_subruta2 + subruta1_size);
+          }
+          // Intercambiar los nodos de la subruta más larga
+          for (int k = 0; k < subruta1_size; k++) {
+            ruta_actual1.intercambiar_parada(subruta2[k], k + indice_subruta1);
+          }
+          for (int k = 0; k < -diferencia; k++) {
+            ruta_actual1.anadir_parada(subruta2[k + subruta1_size], k + indice_subruta1 + subruta1_size);
+          }
+        }
+      }
+      if (!ruta_actual1.factible(this->datos_problema_, this->distancia_zonas_) || !ruta_actual2.factible(this->datos_problema_, this->distancia_zonas_)) { continue; } // si no es factible, no lo tengo en cuenta
+      // Calcular coste 
+      // puedo poner un if para ver si ha cambiado en algo las distancias de las rutas (si los extremos de las subrutas son los mismos)
+      double distancia_quitada1 = this->distancia_zonas_.get_distancia(ruta1.get_nodo(indice_subruta1 - 1), ruta1.get_nodo(indice_subruta1)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(indice_subruta1 + subruta1_size - 1), ruta1.get_nodo(indice_subruta1 + subruta1_size));
+      double distancia_quitada2 = this->distancia_zonas_.get_distancia(ruta2.get_nodo(indice_subruta2 - 1), ruta2.get_nodo(indice_subruta2)) + this->distancia_zonas_.get_distancia(ruta2.get_nodo(indice_subruta2 + subruta2_size - 1), ruta2.get_nodo(indice_subruta2 + subruta2_size));
+      double distancia_anadida1 = this->distancia_zonas_.get_distancia(ruta_actual1.get_nodo(indice_subruta1 - 1), ruta1.get_nodo(indice_subruta1)) + this->distancia_zonas_.get_distancia(ruta1.get_nodo(indice_subruta1 + subruta1_size - 1), ruta_actual1.get_nodo(indice_subruta1 + subruta1_size));
+      double distancia_anadida2 = this->distancia_zonas_.get_distancia(ruta_actual2.get_nodo(indice_subruta2 - 1), ruta2.get_nodo(indice_subruta2)) + this->distancia_zonas_.get_distancia(ruta2.get_nodo(indice_subruta2 + subruta2_size - 1), ruta_actual2.get_nodo(indice_subruta2 + subruta2_size));
+      double coste = (distancia_anadida1 + distancia_anadida2) - (distancia_quitada1 + distancia_quitada2);
+      if (coste < mejor_coste) {
+        mejor_coste = coste;
+        mejor_ruta1 = ruta_actual1;
+        mejor_ruta2 = ruta_actual2;
+        cout << "MEJORAAA-------------------------------------------------------------------------------------------" << endl;
+      }
+    }
+  }
+  return {{mejor_ruta1, mejor_ruta2}, mejor_coste};
 }
 
 /**
