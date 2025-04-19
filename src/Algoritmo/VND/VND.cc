@@ -34,12 +34,12 @@ VND::VND() {
   */
 Algoritmo& VND::solve() {
   crear_busquedas_locales();
-  cout << "Rutas de recoleccion iniciales" << endl;
-  for (int i = 0; i < this->rutas_.size(); i++) {
-    cout << this->rutas_[i] << endl;
-  }
-  cout << "Coste inicial: " << this->evaluar_rutas(this->rutas_) << endl;
-  cout << endl;
+  // cout << "Rutas de recoleccion iniciales" << endl;
+  // for (int i = 0; i < this->rutas_.size(); i++) {
+  //   cout << this->rutas_[i] << endl;
+  // }
+  // cout << "Coste inicial: " << this->evaluar_rutas(this->rutas_) << endl;
+  // cout << endl;
   // la máscara la pongo a 1 para que todas las búsquedas se ejecuten
   unsigned int bitmask = (1 << this->busquedas_locales_.size()) - 1;
   bool mejora = false;
@@ -178,6 +178,7 @@ Algoritmo& VND::set_rutas(vector<RutaRecoleccion> rutas) {
  * @details Esta función se encarga de devolver las rutas óptimas.
  */
 vector<RutaRecoleccion>& VND::get_rutas_optimas() {
+  return this->rutas_;
   cout << "Rutas de recolección:" << endl;
   for (const RutaRecoleccion& ruta : this->rutas_) {
     if (ruta.factible(this->datos_problema_, this->distancia_zonas_)) {
@@ -187,7 +188,6 @@ vector<RutaRecoleccion>& VND::get_rutas_optimas() {
     }
   }
   cout << "distancia de la ruta: " << this->evaluar_rutas(this->rutas_) << endl;
-  return this->rutas_;
 }
 
 
@@ -204,6 +204,10 @@ void VND::crear_busquedas_locales() {
   this->busquedas_locales_.push_back(&(new Swap2vect())->set_datos(this->datos_problema_, this->distancia_zonas_));
   // this->busquedas_locales_.push_back(&(new SubrutaSwap())->set_datos(this->datos_problema_, this->distancia_zonas_));
   this->busquedas_locales_.push_back(&(new Insertion())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  // busqueda local de cargarme un vehículo
+  // this->busquedas_locales_.push_back(&(new ElimVehiculo())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  // Cambio de zona de transferencia
+  // this->busquedas_locales_.push_back(&(new TransferenciaSwitch())->set_datos(this->datos_problema_, this->distancia_zonas_));
 }
 
 

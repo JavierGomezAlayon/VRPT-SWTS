@@ -44,6 +44,7 @@ class Problema {
   void solve();
   void set_datos_problema(DatosProblema datos_problema);
  private: 
+  double evaluar_rutas(const vector<RutaRecoleccion>& rutas);
   DatosProblema datos_problema_;
   vector<Algoritmo*> algoritmos_;
 };

@@ -62,24 +62,68 @@ void Problema::solve() {
   this->algoritmos_[3]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
   dynamic_cast<VND*>(this->algoritmos_[3])->set_rutas(rutas_recoleccion).solve();
   rutas_recoleccion = dynamic_cast<VND*>(this->algoritmos_[3])->get_rutas_optimas();
-  // imprimo por pantalla las rutas de recolección
+    
+  // lo resuelvo con el algoritmo constructivo voraz de transporte
+  this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_recoleccion).solve();
+  vector<RutaTransporte> rutas_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
+
+  vector<RutaRecoleccion> mejores_rutas_grasp;
+  float mejor_costo = INFINITY;
+  int sin_mejora = 0;
+  for (int i = 0; i < 10000; i++) {
+    this->algoritmos_[2]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas).solve();
+    this->algoritmos_[3]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+    if (sin_mejora > 500) { break; }
+    // lo resuelvo con el algoritmo GRASP
+    this->algoritmos_[2]->solve();
+    vector<RutaRecoleccion> rutas_grasp = dynamic_cast<Grasp*>(this->algoritmos_[2])->get_rutas();
+    
+    // mejoro la solución con busqueda local
+    dynamic_cast<VND*>(this->algoritmos_[3])->set_rutas(rutas_grasp).solve();
+    rutas_grasp = dynamic_cast<VND*>(this->algoritmos_[3])->get_rutas_optimas();
+    float coste_ruta_grasp = this->evaluar_rutas(rutas_grasp);
+
+    if (coste_ruta_grasp < mejor_costo) {
+      mejores_rutas_grasp = rutas_grasp;
+      mejor_costo = coste_ruta_grasp;
+      sin_mejora = 0;
+    } else {
+      sin_mejora++;
+    }
+  }
   
+  // lo resuelvo con el algoritmo constructivo voraz de transporte
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(mejores_rutas_grasp).solve();
+  vector<RutaTransporte> rutas_grasp_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
+
+  // imprimo toda la solución
+  cout << "Rutas de recolección:" << endl;
+  for (const RutaRecoleccion& ruta : mejores_rutas_grasp) {
+    if (ruta.factible(this->datos_problema_, this->datos_problema_.zonas)) {
+      cout << ruta << endl;
+    } else {
+      cout << "Ruta no factible" << endl;
+    }
+  }
+  cout << "Coste de la ruta de recolección: " << this->evaluar_rutas(mejores_rutas_grasp) << endl;
+  cout << "Rutas de transporte:" << endl;
+  for (const RutaTransporte& ruta : rutas_grasp_transporte) {
+    cout << ruta << endl;
+  }
+}
 
 
-  // // lo resuelvo con el algoritmo constructivo voraz de transporte
-  // this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
-  // dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_recoleccion).solve();
-  // vector<RutaTransporte> rutas_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
-// 
-  // // lo resuelvo con el algoritmo GRASP
-  // this->algoritmos_[2]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas).solve();
-  // vector<RutaRecoleccion> rutas_grasp = dynamic_cast<Grasp*>(this->algoritmos_[2])->get_rutas();
-// 
-  // // Mejoro las rutas de recolección por medio de las busquedas locales
-// 
-  // 
-  // // lo resuelvo con el algoritmo constructivo voraz de transporte
-  // dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_grasp).solve();
-  // vector<RutaTransporte> rutas_grasp_transporte = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
 
+/** Problema::evaluar_rutas(vector<RutaRecoleccion>& rutas)
+  * @brief Evalua las rutas.
+  * @param rutas: Rutas a evaluar
+  * @return double: coste de las rutas
+  */
+double Problema::evaluar_rutas(const vector<RutaRecoleccion>& rutas) {
+  double coste = 0;
+  for (int i = 0; i < rutas.size(); i++) {
+    coste += rutas[i].get_distancia_total(this->datos_problema_.zonas);
+  }
+  return coste;
 }
