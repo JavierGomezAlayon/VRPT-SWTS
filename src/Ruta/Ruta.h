@@ -17,6 +17,8 @@
 
 #include <iostream>
 #include <vector>
+#include "../DistanciaZonas/DistanciaZonas.h"
+#include "../Estructuras_auxiliares/Datos_problema/Datos_problema.h"
 
 using namespace std;
 
@@ -31,6 +33,9 @@ class Ruta {
   virtual void set_nueva_parada(int parada);
   virtual int get_nodo(int id) const;
   virtual int size() const;
+  virtual double get_distancia_total(const DistanciaZonas& distancia_zonas) const = 0;
+  virtual bool factible(const DatosProblema& datos_problema, const DistanciaZonas& distancia_zonas) const = 0;
+
  protected:
   vector<int> paradas_;
 };

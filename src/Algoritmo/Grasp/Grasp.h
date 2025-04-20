@@ -26,7 +26,7 @@ class Grasp : public Algoritmo {
   Grasp();
   Algoritmo& solve() override;
   vector<RutaRecoleccion>& get_rutas();
-  void set_amplitud_lista_random(int amplitud_lista_random);
+  Algoritmo& set_amplitud_lista_random(int amplitud_lista_random);
  private:
   pair<int, double> obtener_zona_mas_cercana(int id_zona, int numero_de_zonas, char tipo_zona = 'R', const set<int>& zonas_visitadas = {}) const;
   vector<RutaRecoleccion> rutas_;

@@ -63,7 +63,7 @@ Algoritmo& VND::solve() {
     }
     if (busqueda_local->rutas_necesarias() == 1) {
       do {
-        double coste_ruta_inicial = this->evaluar_rutas(this->rutas_);
+        // double coste_ruta_inicial = this->evaluar_rutas(this->rutas_);
         double coste_minimo = 0;
         mejora = false;
         coste_minimo = 0;
@@ -103,7 +103,7 @@ Algoritmo& VND::solve() {
       pair<RutaRecoleccion,RutaRecoleccion> mejor_ruta;
       double coste_minimo = 0;
       do {
-        const double coste_ruta_inicial = this->evaluar_rutas(this->rutas_);
+        // const double coste_ruta_inicial = this->evaluar_rutas(this->rutas_);
         coste_minimo = 0;
         mejora = false;
         mejor_ruta = {this->rutas_[0], this->rutas_[1]};
@@ -156,9 +156,6 @@ Algoritmo& VND::solve() {
   return *this;
 }
 
-
-
-
 /**
  * @brief VND::set_rutas
  * @details Establece las rutas del objeto.
@@ -210,7 +207,6 @@ void VND::crear_busquedas_locales() {
   // this->busquedas_locales_.push_back(&(new TransferenciaSwitch())->set_datos(this->datos_problema_, this->distancia_zonas_));
 }
 
-
 /**
  * @brief VND::evaluar_rutas
  * @details Evalua las rutas.
@@ -220,7 +216,8 @@ void VND::crear_busquedas_locales() {
  */
 double VND::evaluar_rutas(const vector<RutaRecoleccion>& rutas) {
   double coste = 0;
-  for (int i = 0; i < rutas.size(); i++) {
+  int rutas_size = rutas.size();
+  for (int i = 0; i < rutas_size; i++) {
     coste += rutas[i].get_distancia_total(this->distancia_zonas_);
   }
   return coste;

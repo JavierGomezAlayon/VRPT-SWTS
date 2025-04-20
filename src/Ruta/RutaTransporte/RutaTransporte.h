@@ -28,6 +28,8 @@ class RutaTransporte : public Ruta {
  public:
   RutaTransporte();
   RutaTransporte(const vector<int>& paradas);
+  double get_distancia_total(const DistanciaZonas& distancia_zonas) const override;
+  bool factible(const DatosProblema& datos_problema, const DistanciaZonas& distancia_zonas) const override;
   friend ostream& operator<<(ostream& os, const RutaTransporte& ruta);
 
 

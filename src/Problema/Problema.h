@@ -27,10 +27,10 @@
 #include"../DistanciaZonas/DistanciaZonas.h"
 #include"../Estructuras_auxiliares/Datos_problema/Datos_problema.h"
 #include"../Estructuras_auxiliares/Tarea/Tarea.h"
-
-
-
-
+#include"../Estructuras_auxiliares/Resultados/Resultados.h"
+#include<chrono> // Para medir el tiempo de ejecución
+#include<algorithm> // Para sort
+#include <iomanip> // Para setw
 
 /**
  * @brief Clase que representa el problema de recolección y transporte de residuos.
@@ -41,12 +41,23 @@ class Problema {
  public:
   Problema();
   Problema(DatosProblema datos_problema);
-  void solve();
+  float solve();
+  vector<Resultados>& get_resultados();
+  void grasp(int candidatos_grasp);
+  void vnd(int max_iteraciones ,int intentos_mejora, int candidatos_grasp);
+  void voraz();
   void set_datos_problema(DatosProblema datos_problema);
+  void mostrar_resultados();
  private: 
   double evaluar_rutas(const vector<RutaRecoleccion>& rutas);
+  double evaluar_rutas(const vector<RutaTransporte>& rutas);
+  void mostrar_resultados_voraz(vector<Resultados>& resultados);
+  void mostrar_resultados_grasp(vector<Resultados>& resultados);
+  void mostrar_resultados_vnd(vector<Resultados>& resultados);
   DatosProblema datos_problema_;
-  vector<Algoritmo*> algoritmos_;
+  vector<Algoritmo*> algoritmos_; // 0: voraz recoleccion, 1: voraz transporte, 2: grasp, 3: vnd
+  vector<Resultados> resultados_;
 };
 
-#endif
+// End of header guard
+#endif  // C_Problema_H

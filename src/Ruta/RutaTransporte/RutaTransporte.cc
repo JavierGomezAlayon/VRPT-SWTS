@@ -47,3 +47,33 @@ ostream& operator<<(ostream& os, const RutaTransporte& ruta) {
   return os;
 }
 
+/** RutaTransporte::get_distancia_total
+  * @brief Devuelve la distancia total de la ruta.
+  * @param distancia_zonas: objeto de la clase DistanciaZonas
+  * @return distancia total de la ruta
+  */
+double RutaTransporte::get_distancia_total(const DistanciaZonas& distancia_zonas) const {
+  double distancia_total = 0;
+  int ruta_size = this->paradas_.size();
+  int anterior = 0;
+  for (int i = 1; i < ruta_size - 1; i++) {
+    if (anterior == this->paradas_[i]) {
+      continue;
+    }
+    distancia_total += distancia_zonas.get_distancia(anterior, this->paradas_[i]);
+    anterior = this->paradas_[i];
+  }
+  return distancia_total;
+}
+/** RutaTransporte::factible
+  * @brief Devuelve si la ruta es factible.
+  * @param datos_problema: objeto de la clase DatosProblema
+  * @param distancia_zonas: objeto de la clase DistanciaZonas
+  * @return true si la ruta es factible, false en caso contrario
+  */
+bool RutaTransporte::factible(const DatosProblema& datos_problema, const DistanciaZonas& distancia_zonas) const {
+  if (this->get_distancia_total(distancia_zonas) * 60 / datos_problema.velocidad_vehiculo > datos_problema.duracion_maxima_transporte) {
+    return false;
+  }
+  return true;
+}

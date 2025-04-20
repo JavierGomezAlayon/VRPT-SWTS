@@ -135,8 +135,9 @@ pair<int, double> Grasp::obtener_zona_mas_cercana(int id_zona, int numero_de_zon
 /** Grasp::set_amplitud_lista_random(int amplitud_lista_random)
   * @brief Establece la amplitud de la lista aleatoria.
   * @param amplitud_lista_random: amplitud de la lista aleatoria
-  * @return void
+  * @return Algoritmo*: objeto de la clase Algoritmo
   */
-void Grasp::set_amplitud_lista_random(int amplitud_lista_random) {
+Algoritmo& Grasp::set_amplitud_lista_random(int amplitud_lista_random) {
   this->amplitud_lista_random_ = amplitud_lista_random;
+  return *this;
 }
