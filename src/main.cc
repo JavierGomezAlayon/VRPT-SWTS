@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
   // double coste_total = 0;
   Problema problema;
   for (int i = 1; i <= 20; i++) {
-    datos.fichero = "instance" + std::to_string(i) + ".txt";
+    datos.fichero = "instance" + std::to_string(i);
     try {
       //datos = recoger_parametro(argc, argv);
       datos_problema = leer_fichero(datos.fichero);
@@ -35,12 +35,13 @@ int main(int argc, char *argv[]) {
 
     // cout << "\nINSTANCIA " << i << endl;
     // cout << endl;
+
     problema.set_datos_problema(datos_problema);
     try {
       // coste_total += 1;
       problema.voraz();
       problema.grasp(3);
-      problema.vnd(1000, 300, 3);
+      problema.vnd(300, 100, 3);
     } catch (std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       return 1;

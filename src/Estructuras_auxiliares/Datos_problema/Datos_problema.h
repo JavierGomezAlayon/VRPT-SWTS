@@ -32,7 +32,13 @@ struct DatosProblema {
   int capacidad_vehiculo_recoleccion;
   int capacidad_vehiculo_transporte;
   int velocidad_vehiculo;
+  string nombre_fichero;
   vector<Zona*> zonas;
+  /**
+   * @brief Función que devuelve la zona con el id dado.
+   * @param id_zona: id de la zona a buscar
+   * @return Zona*: puntero a la zona con el id dado.
+   */
   Zona* obtener_zona(int id_zona) const {
     for (const auto& zona : zonas) {
       if (zona->get_id_zona() == id_zona) {

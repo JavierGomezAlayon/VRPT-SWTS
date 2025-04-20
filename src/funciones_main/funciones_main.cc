@@ -100,7 +100,7 @@ void menu() {
  * @throw std::invalid_argument si no se ha podido abrir el fichero
  */
 DatosProblema leer_fichero(std::string fichero) {
-  std::ifstream file("/home/javichu401/clases/DAA/VRPT-SWTS/data/" + fichero);
+  std::ifstream file("/home/javichu401/clases/DAA/VRPT-SWTS/data/" + fichero + ".txt");
   if (!file.is_open()) {
     throw std::invalid_argument("No se ha podido abrir el fichero");
   }
@@ -112,6 +112,8 @@ DatosProblema leer_fichero(std::string fichero) {
     actualizar_datos(datos_problema, sslinea);
   }
   file.close();
+  // quito al nombre del fichero la extensión
+  datos_problema.nombre_fichero = fichero;
   return datos_problema;
 }
 

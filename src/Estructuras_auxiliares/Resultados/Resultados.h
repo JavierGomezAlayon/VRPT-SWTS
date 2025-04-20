@@ -17,6 +17,11 @@
 #include"../../Ruta/RutaRecoleccion/RutaRecoleccion.h"
 #include"../../Ruta/RutaTransporte/RutaTransporte.h"
 
+/**
+ * @brief Estructura que contiene los resultados de la ejecución de los algoritmos.
+ *        Se utiliza para almacenar los resultados de la ejecución de los algoritmos, 
+ *        para posteriormente mostrarlos por pantalla.
+ */
 struct Resultados {
   vector<RutaRecoleccion> rutas_recoleccion_;
   vector<RutaTransporte> rutas_transporte_;
@@ -27,6 +32,7 @@ struct Resultados {
   int num_zonas_;
   int num_candidatos_grasp_;
   int type_; // 0: voraz, 1: grasp, 2: vnd
+  string nombre_fichero_;
 };
 
 #endif

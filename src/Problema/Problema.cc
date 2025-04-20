@@ -176,6 +176,7 @@ void Problema::grasp(int candidatos_grasp) {
 
   // Hago los resultados
   Resultados resultado;
+  resultado.nombre_fichero_ = this->datos_problema_.nombre_fichero;
   resultado.rutas_recoleccion_ = rutas_grasp;
   resultado.rutas_transporte_ = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
   resultado.coste_rutas_recoleccion_ = this->evaluar_rutas(rutas_grasp);
@@ -227,6 +228,7 @@ void Problema::vnd(int max_iteraciones ,int intentos_mejora, int candidatos_gras
 
   // Hago los resultados
   Resultados resultado;
+  resultado.nombre_fichero_ = this->datos_problema_.nombre_fichero;
   resultado.rutas_recoleccion_ = mejores_rutas_grasp;
   resultado.rutas_transporte_ = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
   resultado.coste_rutas_recoleccion_ = this->evaluar_rutas(mejores_rutas_grasp);
@@ -264,6 +266,7 @@ void Problema::voraz() {
 
   // Hago los resultados
   Resultados resultado;
+  resultado.nombre_fichero_ = this->datos_problema_.nombre_fichero;
   resultado.rutas_recoleccion_ = rutas_recoleccion;
   resultado.rutas_transporte_ = rutas_transporte;
   resultado.coste_rutas_recoleccion_ = this->evaluar_rutas(rutas_recoleccion);
@@ -297,12 +300,22 @@ void Problema::mostrar_resultados() {
   vector<Resultados> resultados_vnd(this->resultados_.begin() + counts[0] + counts[1], this->resultados_.end());
   // muestro los resultados de cada algoritmo
   if (resultados_voraz.size() > 0) {
+    // ordeno los resultados por el nombre del fichero
+    sort(resultados_voraz.begin(), resultados_voraz.end(), [](const Resultados& a, const Resultados& b) {
+      return stoi(a.nombre_fichero_.substr(8)) < stoi(b.nombre_fichero_.substr(8)); // cojo solo el número del nombre del fichero y lo comparo
+    });
     this->mostrar_resultados_voraz(resultados_voraz);
   }
   if (resultados_grasp.size() > 0) {
+    sort(resultados_grasp.begin(), resultados_grasp.end(), [](const Resultados& a, const Resultados& b) {
+      return stoi(a.nombre_fichero_.substr(8)) < stoi(b.nombre_fichero_.substr(8));
+    });
     this->mostrar_resultados_grasp(resultados_grasp);
   }
   if (resultados_vnd.size() > 0) {
+    sort(resultados_vnd.begin(), resultados_vnd.end(), [](const Resultados& a, const Resultados& b) {
+      return stoi(a.nombre_fichero_.substr(8)) < stoi(b.nombre_fichero_.substr(8)); // cojo solo el número del nombre del fichero y lo comparo
+    });
     this->mostrar_resultados_vnd(resultados_vnd);
   }
 }
@@ -333,7 +346,7 @@ void Problema::mostrar_resultados_voraz(vector<Resultados>& resultados) {
   // Itero sobre los datos
   for (int i = 0; i < resultados_size; i++) {
     cout << left 
-    << setw(15) << "instancia " + to_string(i + 1)
+    << setw(15) << resultados[i].nombre_fichero_
     << setw(8) << resultados[i].num_zonas_
     << setw(6) << resultados[i].rutas_recoleccion_.size()
     << setw(6) << resultados[i].rutas_transporte_.size()
@@ -392,7 +405,7 @@ void Problema::mostrar_resultados_grasp(vector<Resultados>& resultados) {
   // Itero sobre los datos
   for (int i = 0; i < resultados_size; i++) {
     cout << left 
-    << setw(15) << "instancia " + to_string(i + 1)
+    << setw(15) << resultados[i].nombre_fichero_
     << setw(8) << resultados[i].num_zonas_
     << setw(6) << resultados[i].num_candidatos_grasp_
     << setw(6) << resultados[i].rutas_recoleccion_.size()
@@ -455,7 +468,7 @@ void Problema::mostrar_resultados_vnd(vector<Resultados>& resultados) {
   // Itero sobre los datos
   for (int i = 0; i < resultados_size; i++) {
     cout << left 
-    << setw(15) << "instancia " + to_string(i + 1)
+    << setw(15) << resultados[i].nombre_fichero_
     << setw(8) << resultados[i].num_zonas_
     << setw(6) << resultados[i].num_candidatos_grasp_
     << setw(6) << resultados[i].rutas_recoleccion_.size()
