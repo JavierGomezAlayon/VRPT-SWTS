@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
   //Compruebo si se han introducido los argumentos necesarios
   Dato datos;
   DatosProblema datos_problema;
-  // double coste_total = 0;
   Problema problema;
+  for (int j = 2; j <= 15; j++) { // para ver la variabilidad de los resultados según el |LRC|
   for (int i = 1; i <= 20; i++) {
     datos.fichero = "instance" + std::to_string(i);
     try {
@@ -33,22 +33,28 @@ int main(int argc, char *argv[]) {
       return 1;
     }
 
-    // cout << "\nINSTANCIA " << i << endl;
-    // cout << endl;
-
     problema.set_datos_problema(datos_problema);
     try {
-      // coste_total += 1;
-      problema.voraz();
-      problema.grasp(3);
-      problema.vnd(300, 100, 3);
+      
+        // problema.vnd(1000, 400, 2);
+        // problema.vnd(1000, 400, 2);
+        // problema.vnd(1000, 400, 2);
+        // problema.vnd(1000, 400, 3);
+        // problema.vnd(1000, 400, 3);
+        problema.vnd(200, 50, j);
+        //problema.voraz();
+        // problema.grasp(j);
+        // problema.grasp(j);
+        // problema.grasp(j);
     } catch (std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       return 1;
     }
   }
   problema.mostrar_resultados();
-  // cout << "Coste total: " << coste_total / 20 << endl;
+  problema.resultados_clear();
+  }
+  //problema.mostrar_resultados();
   cout << "Fin del programa" << endl;
   return 0;
 }

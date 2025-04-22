@@ -160,7 +160,9 @@ vector<Resultados>& Problema::get_resultados() {
   * @return void
   */
 void Problema::grasp(int candidatos_grasp) {
-  vector<RutaRecoleccion> mejores_rutas_grasp;
+  if (candidatos_grasp < 1) {
+    throw std::invalid_argument("El número de candidatos para el algoritmo GRASP debe ser mayor que 0");
+  }
   this->algoritmos_[2]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
   this->algoritmos_[3]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
   auto start = chrono::high_resolution_clock::now();
@@ -171,8 +173,11 @@ void Problema::grasp(int candidatos_grasp) {
   dynamic_cast<VND*>(this->algoritmos_[3])->set_rutas(rutas_grasp).solve();
   rutas_grasp = dynamic_cast<VND*>(this->algoritmos_[3])->get_rutas_optimas();
   auto end = chrono::high_resolution_clock::now();
+  // hago las rutas de transporte
+  this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(rutas_grasp).solve();
+  // Calculo el tiempo transcurrido
   chrono::duration<double> tiempo = end - start;
-  //std::cout << "Tiempo de ejecución: " << tiempo.count() << " segundos" << endl;
 
   // Hago los resultados
   Resultados resultado;
@@ -195,6 +200,15 @@ void Problema::grasp(int candidatos_grasp) {
   * @return void
   */
 void Problema::vnd(int max_iteraciones ,int intentos_mejora, int candidatos_grasp) {
+  if (candidatos_grasp < 1) {
+    throw std::invalid_argument("El número de candidatos para el algoritmo GRASP debe ser mayor que 0");
+  }
+  if (intentos_mejora < 1) {
+    throw std::invalid_argument("El número de intentos de mejora debe ser mayor que 0");
+  }
+  if (max_iteraciones < 1) {
+    throw std::invalid_argument("El número de iteraciones debe ser mayor que 0");
+  }
   vector<RutaRecoleccion> mejores_rutas_grasp;
   float mejor_costo = INFINITY;
   int sin_mejora = 0;
@@ -221,10 +235,12 @@ void Problema::vnd(int max_iteraciones ,int intentos_mejora, int candidatos_gras
       sin_mejora++;
     }
   }
+  // hago las rutas de transporte
+  this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(mejores_rutas_grasp).solve();
   // Calculo el tiempo transcurrido
   auto end = chrono::high_resolution_clock::now();
   chrono::duration<double> tiempo = end - start;
-  //cout << "Tiempo de ejecución: " << tiempo.count() << " segundos" << endl;
 
   // Hago los resultados
   Resultados resultado;
@@ -233,7 +249,7 @@ void Problema::vnd(int max_iteraciones ,int intentos_mejora, int candidatos_gras
   resultado.rutas_transporte_ = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
   resultado.coste_rutas_recoleccion_ = this->evaluar_rutas(mejores_rutas_grasp);
   resultado.coste_rutas_transporte_ = this->evaluar_rutas(resultado.rutas_transporte_);
-  resultado.coste_total_ = resultado.coste_rutas_recoleccion_ + resultado.coste_rutas_transporte_;
+  resultado.coste_total_ = resultado.coste_rutas_recoleccion_;
   resultado.tiempo_ejecucion_ = tiempo.count();
   resultado.num_zonas_ = this->datos_problema_.num_zonas_recoleccion;
   resultado.num_candidatos_grasp_ = candidatos_grasp;
@@ -308,12 +324,18 @@ void Problema::mostrar_resultados() {
   }
   if (resultados_grasp.size() > 0) {
     sort(resultados_grasp.begin(), resultados_grasp.end(), [](const Resultados& a, const Resultados& b) {
-      return stoi(a.nombre_fichero_.substr(8)) < stoi(b.nombre_fichero_.substr(8));
+      if (stoi(a.nombre_fichero_.substr(8)) == stoi(b.nombre_fichero_.substr(8))) {
+        return a.num_candidatos_grasp_ < b.num_candidatos_grasp_; // si el número es el mismo, comparo por LRC
+      }
+      return stoi(a.nombre_fichero_.substr(8)) < stoi(b.nombre_fichero_.substr(8)); // cojo solo el número del nombre del fichero y lo comparo
     });
     this->mostrar_resultados_grasp(resultados_grasp);
   }
   if (resultados_vnd.size() > 0) {
     sort(resultados_vnd.begin(), resultados_vnd.end(), [](const Resultados& a, const Resultados& b) {
+      if (stoi(a.nombre_fichero_.substr(8)) == stoi(b.nombre_fichero_.substr(8))) {
+        return a.num_candidatos_grasp_ < b.num_candidatos_grasp_; // si el número es el mismo, comparo por LRC
+      }
       return stoi(a.nombre_fichero_.substr(8)) < stoi(b.nombre_fichero_.substr(8)); // cojo solo el número del nombre del fichero y lo comparo
     });
     this->mostrar_resultados_vnd(resultados_vnd);
@@ -332,6 +354,7 @@ void Problema::mostrar_resultados_voraz(vector<Resultados>& resultados) {
   cout << separador << endl;
   cout << "Resultados del algoritmo voraz:" << endl;
   cout << separador << endl;
+  cout << fixed << setprecision(4);
   cout << left 
   << setw(15) << "Instancia" 
   << setw(8) << "#Zonas" 
@@ -345,19 +368,20 @@ void Problema::mostrar_resultados_voraz(vector<Resultados>& resultados) {
   double mediaZonas = 0.0, mediaCV = 0.0, mediaTV = 0.0, mediaCPU = 0.0, mediaCoste = 0.0;
   // Itero sobre los datos
   for (int i = 0; i < resultados_size; i++) {
+    cout << fixed << setprecision(4);
     cout << left 
     << setw(15) << resultados[i].nombre_fichero_
     << setw(8) << resultados[i].num_zonas_
     << setw(6) << resultados[i].rutas_recoleccion_.size()
     << setw(6) << resultados[i].rutas_transporte_.size()
     << setw(12) << resultados[i].tiempo_ejecucion_
-    << setw(12) << resultados[i].coste_total_
+    << setw(12) << resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo
     << endl;
     mediaZonas += resultados[i].num_zonas_;
     mediaCV += resultados[i].rutas_recoleccion_.size();
     mediaTV += resultados[i].rutas_transporte_.size();
     mediaCPU += resultados[i].tiempo_ejecucion_;
-    mediaCoste += resultados[i].coste_total_;
+    mediaCoste += resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo;
   }
   // Medias
   cout << separador << endl;
@@ -366,6 +390,7 @@ void Problema::mostrar_resultados_voraz(vector<Resultados>& resultados) {
   mediaTV /= resultados.size();
   mediaCPU /= resultados.size();
   mediaCoste /= resultados.size();
+  cout << fixed << setprecision(2);
   cout << left 
   << setw(15) << "Averages" 
   << setw(8) << mediaZonas
@@ -390,6 +415,7 @@ void Problema::mostrar_resultados_grasp(vector<Resultados>& resultados) {
   cout << separador << endl;
   cout << "Resultados del algoritmo GRASP:" << endl;
   cout << separador << endl;
+  cout << fixed << setprecision(4);
   cout << left 
   << setw(15) << "Instancia" 
   << setw(8) << "#Zonas" 
@@ -404,6 +430,7 @@ void Problema::mostrar_resultados_grasp(vector<Resultados>& resultados) {
   double mediaZonas = 0.0, mediaCV = 0.0, mediaTV = 0.0, mediaCPU = 0.0, mediaLRC = 0.0, mediaCoste = 0.0;
   // Itero sobre los datos
   for (int i = 0; i < resultados_size; i++) {
+    cout << fixed << setprecision(4);
     cout << left 
     << setw(15) << resultados[i].nombre_fichero_
     << setw(8) << resultados[i].num_zonas_
@@ -411,14 +438,14 @@ void Problema::mostrar_resultados_grasp(vector<Resultados>& resultados) {
     << setw(6) << resultados[i].rutas_recoleccion_.size()
     << setw(6) << resultados[i].rutas_transporte_.size()
     << setw(12) << resultados[i].tiempo_ejecucion_
-    << setw(12) << resultados[i].coste_total_
+    << setw(12) << resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo
     << endl;
     mediaZonas += resultados[i].num_zonas_;
     mediaLRC += resultados[i].num_candidatos_grasp_;
     mediaCV += resultados[i].rutas_recoleccion_.size();
     mediaTV += resultados[i].rutas_transporte_.size();
     mediaCPU += resultados[i].tiempo_ejecucion_;
-    mediaCoste += resultados[i].coste_total_;
+    mediaCoste += resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo;
   }
   // Medias
   cout << separador << endl;
@@ -428,10 +455,11 @@ void Problema::mostrar_resultados_grasp(vector<Resultados>& resultados) {
   mediaTV /= resultados.size();
   mediaCPU /= resultados.size();
   mediaCoste /= resultados.size();
+  cout << fixed << setprecision(2);
   cout << left 
   << setw(15) << "Averages" 
-  << setw(8) << mediaZonas
-  << setw(6) << mediaLRC
+  << setw(8) << int(mediaZonas)
+  << setw(6) << int(mediaLRC)
   << setw(6) << mediaCV
   << setw(6) << mediaTV
   << setw(12) << mediaCPU
@@ -453,6 +481,7 @@ void Problema::mostrar_resultados_vnd(vector<Resultados>& resultados) {
   cout << separador << endl;
   cout << "Resultados del algoritmo GVNS:" << endl;
   cout << separador << endl;
+  cout << fixed << setprecision(4);
   cout << left 
   << setw(15) << "Instancia" 
   << setw(8) << "#Zonas" 
@@ -467,21 +496,22 @@ void Problema::mostrar_resultados_vnd(vector<Resultados>& resultados) {
   double mediaZonas = 0.0, mediaCV = 0.0, mediaTV = 0.0, mediaCPU = 0.0, mediaKmax = 0.0, mediaCoste = 0.0;
   // Itero sobre los datos
   for (int i = 0; i < resultados_size; i++) {
-    cout << left 
-    << setw(15) << resultados[i].nombre_fichero_
-    << setw(8) << resultados[i].num_zonas_
-    << setw(6) << resultados[i].num_candidatos_grasp_
-    << setw(6) << resultados[i].rutas_recoleccion_.size()
-    << setw(6) << resultados[i].rutas_transporte_.size()
-    << setw(12) << resultados[i].tiempo_ejecucion_
-    << setw(12) << resultados[i].coste_total_
-    << endl;
+    // cout << fixed << setprecision(4);
+    // cout << left 
+    // << setw(15) << resultados[i].nombre_fichero_
+    // << setw(8) << resultados[i].num_zonas_
+    // << setw(6) << resultados[i].num_candidatos_grasp_
+    // << setw(6) << resultados[i].rutas_recoleccion_.size()
+    // << setw(6) << resultados[i].rutas_transporte_.size()
+    // << setw(12) << resultados[i].tiempo_ejecucion_
+    // << setw(12) << resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo
+    // << endl;
     mediaZonas += resultados[i].num_zonas_;
     mediaKmax += resultados[i].num_candidatos_grasp_;
     mediaCV += resultados[i].rutas_recoleccion_.size();
     mediaTV += resultados[i].rutas_transporte_.size();
     mediaCPU += resultados[i].tiempo_ejecucion_;
-    mediaCoste += resultados[i].coste_total_;
+    mediaCoste += resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo;
   }
   // Medias
   cout << separador << endl;
@@ -491,10 +521,11 @@ void Problema::mostrar_resultados_vnd(vector<Resultados>& resultados) {
   mediaTV /= resultados.size();
   mediaCPU /= resultados.size();
   mediaCoste /= resultados.size();
+  cout << fixed << setprecision(2);
   cout << left 
   << setw(15) << "Averages" 
-  << setw(8) << mediaZonas
-  << setw(6) << mediaKmax
+  << setw(8) << int(mediaZonas)
+  << setw(6) << int(mediaKmax)
   << setw(6) << mediaCV
   << setw(6) << mediaTV
   << setw(12) << mediaCPU
@@ -504,3 +535,11 @@ void Problema::mostrar_resultados_vnd(vector<Resultados>& resultados) {
   cout << "Fin de la tabla GVNS" << endl;
 }
 
+
+/** Problema::resultados_clear()
+  * @brief Limpia los resultados.
+  * @return void
+  */
+void Problema::resultados_clear() {
+  this->resultados_.clear();
+}

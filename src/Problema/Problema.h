@@ -48,6 +48,7 @@ class Problema {
   void voraz();
   void set_datos_problema(DatosProblema datos_problema);
   void mostrar_resultados();
+  void resultados_clear();
  private: 
   double evaluar_rutas(const vector<RutaRecoleccion>& rutas);
   double evaluar_rutas(const vector<RutaTransporte>& rutas);
