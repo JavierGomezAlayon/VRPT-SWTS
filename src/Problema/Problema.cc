@@ -294,6 +294,78 @@ void Problema::voraz() {
   this->resultados_.push_back(resultado);
 }
 
+/** 
+ * 
+ */
+void Problema::modi(int max_iteraciones, int intentos_mejora, int candidatos_grasp) {
+  if (candidatos_grasp < 1) {
+    throw std::invalid_argument("El número de candidatos para el algoritmo GRASP debe ser mayor que 0");
+  }
+  if (intentos_mejora < 1) {
+    throw std::invalid_argument("El número de intentos de mejora debe ser mayor que 0");
+  }
+  if (max_iteraciones < 1) {
+    throw std::invalid_argument("El número de iteraciones debe ser mayor que 0");
+  }
+  vector<RutaRecoleccion> mejores_rutas_grasp;
+  float mejor_costo = INFINITY;
+  int sin_mejora = 0;
+  this->algoritmos_[2]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  this->algoritmos_[3]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  dynamic_cast<VND*>(this->algoritmos_[3])->set_busquedas_locales({true, true, true, true});
+  dynamic_cast<Grasp*>(this->algoritmos_[2])->set_amplitud_lista_random(candidatos_grasp);
+  // registro el tiempo
+  auto start = chrono::high_resolution_clock::now();
+  for (int i = 0; i < max_iteraciones; i++) {
+    if (sin_mejora > intentos_mejora) { break; }
+    // lo resuelvo con el algoritmo GRASP
+    this->algoritmos_[2]->solve();
+    vector<RutaRecoleccion> rutas_grasp = dynamic_cast<Grasp*>(this->algoritmos_[2])->get_rutas();
+    // digo cuales busquedas locales quiero hacer
+    dynamic_cast<VND*>(this->algoritmos_[3])->set_busquedas_locales({true, false, false, false});
+    // hago la busqueda local
+    dynamic_cast<VND*>(this->algoritmos_[3])->set_rutas(rutas_grasp).solve();
+    rutas_grasp = dynamic_cast<VND*>(this->algoritmos_[3])->get_rutas_optimas();
+    // digo cuales busquedas locales quiero hacer
+    dynamic_cast<VND*>(this->algoritmos_[3])->set_busquedas_locales({false, true, false, false});
+    // hago la busqueda local
+    dynamic_cast<VND*>(this->algoritmos_[3])->set_rutas(rutas_grasp).solve();
+    rutas_grasp = dynamic_cast<VND*>(this->algoritmos_[3])->get_rutas_optimas();
+    // vuelvo a hacer la busqueda local pero con el otro tipo de busqueda
+    
+    dynamic_cast<VND*>(this->algoritmos_[3])->set_busquedas_locales({false, false, true, true});
+    dynamic_cast<VND*>(this->algoritmos_[3])->set_rutas(rutas_grasp).solve();
+    rutas_grasp = dynamic_cast<VND*>(this->algoritmos_[3])->get_rutas_optimas();
+    float coste_ruta_grasp = this->evaluar_rutas(rutas_grasp);
+    if ((rutas_grasp.size() < mejores_rutas_grasp.size() || mejores_rutas_grasp.size() == 0) || (coste_ruta_grasp < mejor_costo && rutas_grasp.size() == mejores_rutas_grasp.size())) {
+      mejores_rutas_grasp = rutas_grasp;
+      mejor_costo = coste_ruta_grasp;
+      sin_mejora = 0;
+    } else {
+      sin_mejora++;
+    }
+  }
+  // hago las rutas de transporte
+  this->algoritmos_[1]->set_datos_problema(this->datos_problema_).set_distancia_zonas(this->datos_problema_.zonas);
+  dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->set_rutas(mejores_rutas_grasp).solve();
+  // Calculo el tiempo transcurrido
+  auto end = chrono::high_resolution_clock::now();
+  chrono::duration<double> tiempo = end - start;
+
+  // Hago los resultados
+  Resultados resultado;
+  resultado.nombre_fichero_ = this->datos_problema_.nombre_fichero;
+  resultado.rutas_recoleccion_ = mejores_rutas_grasp;
+  resultado.rutas_transporte_ = dynamic_cast<ConstructivoVorazTransporte*>(this->algoritmos_[1])->get_rutas();
+  resultado.coste_rutas_recoleccion_ = this->evaluar_rutas(mejores_rutas_grasp);
+  resultado.coste_rutas_transporte_ = this->evaluar_rutas(resultado.rutas_transporte_);
+  resultado.coste_total_ = resultado.coste_rutas_recoleccion_;
+  resultado.tiempo_ejecucion_ = tiempo.count();
+  resultado.num_zonas_ = this->datos_problema_.num_zonas_recoleccion;
+  resultado.num_candidatos_grasp_ = candidatos_grasp;
+  resultado.type_ = 2; // 0: voraz, 1: grasp, 2: vnd
+  this->resultados_.push_back(resultado);
+}
 
 /** Problema::mostrar_resultados()
   * @brief Muestra los resultados.
@@ -497,15 +569,15 @@ void Problema::mostrar_resultados_vnd(vector<Resultados>& resultados) {
   // Itero sobre los datos
   for (int i = 0; i < resultados_size; i++) {
     // cout << fixed << setprecision(4);
-    // cout << left 
-    // << setw(15) << resultados[i].nombre_fichero_
-    // << setw(8) << resultados[i].num_zonas_
-    // << setw(6) << resultados[i].num_candidatos_grasp_
-    // << setw(6) << resultados[i].rutas_recoleccion_.size()
-    // << setw(6) << resultados[i].rutas_transporte_.size()
-    // << setw(12) << resultados[i].tiempo_ejecucion_
-    // << setw(12) << resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo
-    // << endl;
+    cout << left 
+    << setw(15) << resultados[i].nombre_fichero_
+    << setw(8) << resultados[i].num_zonas_
+    << setw(6) << resultados[i].num_candidatos_grasp_
+    << setw(6) << resultados[i].rutas_recoleccion_.size()
+    << setw(6) << resultados[i].rutas_transporte_.size()
+    << setw(12) << resultados[i].tiempo_ejecucion_
+    << setw(12) << resultados[i].coste_total_ * 60 / this->datos_problema_.velocidad_vehiculo
+    << endl;
     mediaZonas += resultados[i].num_zonas_;
     mediaKmax += resultados[i].num_candidatos_grasp_;
     mediaCV += resultados[i].rutas_recoleccion_.size();

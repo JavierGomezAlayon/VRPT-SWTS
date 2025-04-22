@@ -46,6 +46,7 @@ class Problema {
   void grasp(int candidatos_grasp);
   void vnd(int max_iteraciones ,int intentos_mejora, int candidatos_grasp);
   void voraz();
+  void modi(int max_iteraciones, int intentos_mejora, int candidatos_grasp);
   void set_datos_problema(DatosProblema datos_problema);
   void mostrar_resultados();
   void resultados_clear();

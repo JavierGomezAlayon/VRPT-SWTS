@@ -22,7 +22,9 @@
   * @return objeto de la clase VND
   */
 VND::VND() {
-
+  this->busquedas_locales_ = {};
+  this->rutas_ = {};
+  this->busquedas_locales_a_hacer_ = {true, true, true, true, true};
 }
 
 /** VND::solve()
@@ -196,15 +198,18 @@ vector<RutaRecoleccion>& VND::get_rutas_optimas() {
  */
 void VND::crear_busquedas_locales() {
   this->busquedas_locales_.clear();
-  this->busquedas_locales_.push_back(&(new AdjentSwap())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  this->busquedas_locales_.push_back(&(new Swap())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  this->busquedas_locales_.push_back(&(new Swap2vect())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  // this->busquedas_locales_.push_back(&(new SubrutaSwap())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  this->busquedas_locales_.push_back(&(new Insertion())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  // busqueda local de cargarme un vehículo
-  // this->busquedas_locales_.push_back(&(new ElimVehiculo())->set_datos(this->datos_problema_, this->distancia_zonas_));
-  // Cambio de zona de transferencia
-  // this->busquedas_locales_.push_back(&(new TransferenciaSwitch())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  if (this->busquedas_locales_a_hacer_[0]) {
+    this->busquedas_locales_.push_back(&(new AdjentSwap())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  }
+  if (this->busquedas_locales_a_hacer_[1]) {
+    this->busquedas_locales_.push_back(&(new Swap())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  }
+  if (this->busquedas_locales_a_hacer_[2]) { 
+    this->busquedas_locales_.push_back(&(new Swap2vect())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  }
+  if (this->busquedas_locales_a_hacer_[3]) {
+    this->busquedas_locales_.push_back(&(new Insertion())->set_datos(this->datos_problema_, this->distancia_zonas_));
+  }
 }
 
 /**
@@ -222,3 +227,15 @@ double VND::evaluar_rutas(const vector<RutaRecoleccion>& rutas) {
   }
   return coste;
 }
+
+/**
+ * @brief VND::set_busquedas_locales
+ * @details Establece las búsquedas locales.
+ * @param busquedas_locales: vector de búsquedas locales
+ * @return void
+ * @details Esta función se encarga de establecer las búsquedas locales.
+ */
+void VND::set_busquedas_locales(vector<bool> busquedas_locales) {
+  this->busquedas_locales_a_hacer_ = busquedas_locales;
+}
+

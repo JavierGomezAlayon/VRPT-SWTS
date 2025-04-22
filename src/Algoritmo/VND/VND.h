@@ -35,11 +35,13 @@ class VND : public Algoritmo {
   Algoritmo& solve() override;
   Algoritmo& set_rutas(vector<RutaRecoleccion> rutas);
   vector<RutaRecoleccion>& get_rutas_optimas();
+  void set_busquedas_locales(vector<bool> busquedas_locales);
  private:
   void crear_busquedas_locales();
   double evaluar_rutas(const vector<RutaRecoleccion>& rutas);
   vector<BusquedaLocal*> busquedas_locales_;
   vector<RutaRecoleccion> rutas_;
+  vector<bool> busquedas_locales_a_hacer_;
 };
 
 #endif

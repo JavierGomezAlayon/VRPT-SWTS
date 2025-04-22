@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
   Dato datos;
   DatosProblema datos_problema;
   Problema problema;
-  for (int j = 2; j <= 15; j++) { // para ver la variabilidad de los resultados según el |LRC|
-  for (int i = 1; i <= 20; i++) {
+  for (int j = 4; j <= 4; j++) { // para ver la variabilidad de los resultados según el |LRC|
+  for (int i = 3; i <= 4; i++) { // para modificar el fichero que le paso
     datos.fichero = "instance" + std::to_string(i);
     try {
       //datos = recoger_parametro(argc, argv);
@@ -35,17 +35,7 @@ int main(int argc, char *argv[]) {
 
     problema.set_datos_problema(datos_problema);
     try {
-      
-        // problema.vnd(1000, 400, 2);
-        // problema.vnd(1000, 400, 2);
-        // problema.vnd(1000, 400, 2);
-        // problema.vnd(1000, 400, 3);
-        // problema.vnd(1000, 400, 3);
-        problema.vnd(200, 50, j);
-        //problema.voraz();
-        // problema.grasp(j);
-        // problema.grasp(j);
-        // problema.grasp(j);
+        problema.modi(1000, 400, 3);
     } catch (std::exception &e) {
       std::cerr << "Error: " << e.what() << std::endl;
       return 1;
